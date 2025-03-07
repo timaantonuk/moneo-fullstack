@@ -8,8 +8,8 @@ import {generateRandomSeed} from "../utils/functions.ts";
 
 function Layout() {
     return (
-        <section className="flex justify-center items-center h-screen">
-            <div className="main-wrapper flex flex-col items-center py-5 relative w-full max-w-4xl">
+        <section className="flex justify-center items-center h-screen w-screen">
+            <div className="main-wrapper flex flex-col items-center py-5 relative max-w-4xl">
 
 
                 <div className="flex gap-2 items-center justify-between w-full px-10 mb-5">

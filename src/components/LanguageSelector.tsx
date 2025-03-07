@@ -32,7 +32,7 @@ function LanguageSelector() {
     return (
         <div>
             <Button
-                variant="outlined"
+                variant='contained'
                 onClick={handleClick}
                 sx={{
                     display: 'flex',

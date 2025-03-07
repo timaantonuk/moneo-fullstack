@@ -12,7 +12,7 @@ export const themeOptions: ThemeOptions = {
     },
     shape: {
         borderRadius: 10
-    },
+},
     palette: {
         mode: 'dark',
         primary: {
