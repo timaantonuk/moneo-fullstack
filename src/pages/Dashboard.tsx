@@ -2,6 +2,8 @@ import SortDropdown from "../components/SortDropdown.tsx";
 import {useState} from "react";
 import BarChart from "../components/BarChart.tsx";
 import PieChart from "../components/PieChart.tsx";
+import {Chip} from "@mui/material";
+import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
 
 
 function Dashboard() {
@@ -11,24 +13,35 @@ function Dashboard() {
     const handleSortChange = (period: 'all' | 'month' | 'day') => {
         setSortPeriod(period);
         console.log('Selected period:', period);
-        // Тут можешь обновлять данные или делать запрос
     };
 
     return (
         <div className='w-full flex flex-col items-center h-full px-5'>
 
+            <div className='flex w-full items-center justify-between px-16'>
 
-            <SortDropdown onChange={handleSortChange}/>
+                <Chip
+                    icon={<CurrencyExchangeIcon sx={{ fontSize: 22 }} />}
+                    label="Your total budget: 4600$"
+                    sx={{
+                        height: 32,
+                        fontSize: '1rem',
+                        paddingX: 1.5,
+                        paddingY: 2.4,
+                        '& .MuiChip-icon': {
+                            marginLeft: '-4px',
+                        },
+                    }}
+                />
+
+
+                <SortDropdown onChange={handleSortChange}/>
+            </div>
 
             <div className='flex gap-5 my-5 w-full'>
                 <BarChart/>
                 <PieChart/>
             </div>
-
-            {/*<div className='flex w-full justify-center gap-50 '>*/}
-            {/*    <ChipStats amount={2500} variant='error' type='expenses'/>*/}
-            {/*    <ChipStats amount={3000} variant='primary' type='income'/>*/}
-            {/*</div>*/}
 
 
         </div>

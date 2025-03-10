@@ -13,7 +13,7 @@ function SortDropdown({ onChange }: { onChange: (period: SortPeriod) => void }) 
     };
 
     return (
-        <FormControl variant="outlined" size="small" className='self-end'>
+        <FormControl variant="outlined" size="small" className='justify-self-end self-end'>
             <InputLabel id="sort-by-label">Sort by</InputLabel>
             <Select
                 labelId="sort-by-label"

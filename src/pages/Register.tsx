@@ -1,14 +1,18 @@
 import {Button, TextField, Typography} from "@mui/material";
 import {Link} from "react-router-dom";
+import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 
 function Register() {
     return (
         <section className='flex justify-center items-center h-screen'>
             <div className='main-wrapper flex flex-col items-center justify-center py-5'>
-                <Typography variant="h2" sx={{marginBottom: '1rem'}}>Moneo App</Typography>
+                <div className='flex items-center gap-2 mb-2'>
+                    <MonetizationOnIcon sx={{fontSize: '4rem'}}/>
+                    <Typography variant="h2">Moneo App</Typography>
+                </div>
                 <Typography variant="h5" sx={{marginBottom: '3rem'}}>Register new account</Typography>
 
-                <form className='flex flex-col gap-5 w-full px-20' action="">
+                <form className='flex flex-col gap-5 w-full px-52' action="">
                     <TextField
                         label="Full Name"
                         name="fullName"

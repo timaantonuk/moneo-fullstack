@@ -4,23 +4,27 @@ import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import { Box, Select, MenuItem, InputLabel, FormControl } from '@mui/material';
 
 type TFormDialogProps = {
     type: 'expense' | 'income',
-}
+};
 
-export default function FormDialog({type}: TFormDialogProps) {
+// 20 популярных эмодзи для финансового приложения
+const emojiList = [
+    "💰", "💳", "🏦", "📈", "📉",
+    "💵", "💸", "🪙", "🏧", "🛒",
+    "🔖", "🏠", "🛍️", "💲", "💎",
+    "💼", "💡", "📝", "🍽️", "🚗"
+];
+
+export default function FormDialog({ type }: TFormDialogProps) {
     const [open, setOpen] = React.useState(false);
+    const [selectedEmoji, setSelectedEmoji] = React.useState("");
 
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
-
-    const handleClose = () => {
-        setOpen(false);
-    };
+    const handleClickOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
 
     return (
         <React.Fragment>
@@ -37,18 +41,18 @@ export default function FormDialog({type}: TFormDialogProps) {
                             event.preventDefault();
                             const formData = new FormData(event.currentTarget);
                             const formJson = Object.fromEntries((formData as any).entries());
-                            const email = formJson.email;
-                            console.log(email);
+                            console.log(formJson);
                             handleClose();
                         },
                     },
                 }}
             >
-                <DialogTitle sx={{backgroundColor: '#212121'}}>Add {type === 'expense' ? 'Expense' : 'Income'}</DialogTitle>
-                <DialogContent sx={{backgroundColor: '#212121'}}>
+                <DialogTitle sx={{ backgroundColor: '#212121', color: 'white' }}>
+                    Add {type === 'expense' ? 'Expense' : 'Income'}
+                </DialogTitle>
+                <DialogContent sx={{ backgroundColor: '#212121' }}>
 
                     <TextField
-                        autoFocus
                         required
                         margin="dense"
                         id="category"
@@ -57,10 +61,11 @@ export default function FormDialog({type}: TFormDialogProps) {
                         type="text"
                         fullWidth
                         variant='standard'
+                        InputLabelProps={{ style: { color: 'white' } }}
+                        InputProps={{ style: { color: 'white' } }}
                     />
 
                     <TextField
-                        autoFocus
                         required
                         margin="dense"
                         id="amount"
@@ -69,10 +74,45 @@ export default function FormDialog({type}: TFormDialogProps) {
                         type="number"
                         fullWidth
                         variant='standard'
+                        InputLabelProps={{ style: { color: 'white' } }}
+                        InputProps={{ style: { color: 'white' } }}
                     />
 
+                    {/* Эмодзи Select */}
+                    <FormControl fullWidth margin="dense" variant="standard">
+                        <InputLabel sx={{ color: 'white' }}>Pick Emoji</InputLabel>
+                        <Select
+                            value={selectedEmoji}
+                            onChange={(event) => setSelectedEmoji(event.target.value)}
+                            displayEmpty
+                            sx={{
+                                backgroundColor: "#333",
+                                color: "white",
+                                borderRadius: 1,
+                                '& .MuiSelect-icon': { color: 'white' },
+                            }}
+                        >
+                            <MenuItem value="">
+                                <em>None</em>
+                            </MenuItem>
+                            <Box
+                                sx={{
+                                    display: "grid",
+                                    gridTemplateColumns: "repeat(5, 1fr)", // 5 колонок
+                                    gap: 1,
+                                    padding: 1,
+                                }}
+                            >
+                                {emojiList.map((emoji) => (
+                                    <MenuItem key={emoji} value={emoji} sx={{ fontSize: "1.5rem", justifyContent: "center" }}>
+                                        {emoji}
+                                    </MenuItem>
+                                ))}
+                            </Box>
+                        </Select>
+                    </FormControl>
+
                     <TextField
-                        autoFocus
                         margin="dense"
                         id="description"
                         name="description"
@@ -80,11 +120,16 @@ export default function FormDialog({type}: TFormDialogProps) {
                         type="text"
                         fullWidth
                         variant='standard'
+                        InputLabelProps={{ style: { color: 'white' } }}
+                        InputProps={{ style: { color: 'white' } }}
                     />
+
                 </DialogContent>
-                <DialogActions sx={{backgroundColor: '#212121'}}>
+                <DialogActions sx={{ backgroundColor: '#212121' }}>
                     <Button variant='contained' color='error' onClick={handleClose}>Cancel</Button>
-                    <Button variant='contained' type="submit">Add {type === 'expense' ? 'Expense' : 'Income'}</Button>
+                    <Button variant='contained' type="submit">
+                        Add {type === 'expense' ? 'Expense' : 'Income'}
+                    </Button>
                 </DialogActions>
             </Dialog>
         </React.Fragment>

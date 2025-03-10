@@ -2,8 +2,9 @@ import { useState } from 'react';
 import { BottomNavigation, BottomNavigationAction, Paper, Box } from '@mui/material';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-import { ShoppingCart } from '@mui/icons-material';
+import {AccountCircle, ShoppingCart} from '@mui/icons-material';
 import { Link, useLocation } from 'react-router-dom';
+import FlagCircleIcon from '@mui/icons-material/FlagCircle';
 
 function BottomNavigationBar() {
     const location = useLocation();
@@ -47,6 +48,18 @@ function BottomNavigationBar() {
                         icon={<ShoppingCart />}
                         component={Link}
                         to="/expenses"
+                    />
+                    <BottomNavigationAction
+                        label="Goals"
+                        icon={<FlagCircleIcon />}
+                        component={Link}
+                        to="/goals"
+                    />
+                    <BottomNavigationAction
+                        label="Account"
+                        icon={<AccountCircle />}
+                        component={Link}
+                        to="/account"
                     />
                 </BottomNavigation>
             </Paper>

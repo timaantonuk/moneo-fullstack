@@ -34,7 +34,7 @@ const CustomActions = () => {
 
 const CustomCategories = () => {
     return (
-        <Chip color={getRandomColor()} label='Clothes'/>
+        <Chip color={getRandomColor()} label='🛜 Clothes'/>
     )
 }
 

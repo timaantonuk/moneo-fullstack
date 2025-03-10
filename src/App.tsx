@@ -8,6 +8,8 @@ import Dashboard from "./pages/Dashboard.tsx";
 import Layout from "./components/Layout.tsx";
 import Income from "./pages/Income.tsx";
 import Expenses from "./pages/Expenses.tsx";
+import Account from "./pages/Account.tsx";
+import Goals from "./pages/Goals.tsx";
 
 function App() {
     return (
@@ -22,6 +24,8 @@ function App() {
                     <Route index element={<Dashboard/>}/>
                     <Route path='income' element={<Income/>}/>
                     <Route path='expenses' element={<Expenses/>}/>
+                    <Route path='account' element={<Account/>}/>
+                    <Route path='goals' element={<Goals/>}/>
                 </Route>
 
             </Routes>
