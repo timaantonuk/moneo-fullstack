@@ -2,9 +2,12 @@ import express from "express"
 import bcrypt from "bcryptjs"
 import jwt from "jsonwebtoken"
 import User from "../models/User.js"
+import crypto from "crypto" // Для генерации случайного seed
+
 
 const router = express.Router()
 
+// Register user
 // Register user
 router.post("/register", async (req, res) => {
   try {
@@ -20,8 +23,18 @@ router.post("/register", async (req, res) => {
     const salt = await bcrypt.genSalt(10)
     const passwordHash = await bcrypt.hash(password, salt)
 
+    // Генерируем случайный seed для аватарки
+    const avatarSeed = crypto.randomBytes(16).toString("hex")
+    const avatarUrl = `https://api.dicebear.com/7.x/adventurer/svg?seed=${avatarSeed}`
+
     // Create new user
-    const newUser = new User({ fullName, email, passwordHash })
+    const newUser = new User({
+      fullName,
+      email,
+      passwordHash,
+      avatar: avatarUrl, // Сохраняем ссылку на аватар
+      language: "en"
+    })
     await newUser.save()
 
     // Generate token
@@ -32,11 +45,11 @@ router.post("/register", async (req, res) => {
         _id: newUser._id,
         fullName: newUser.fullName,
         email: newUser.email,
-        language: newUser.language || "en",
-        avatar: newUser.avatar || null
+        language: newUser.language,
+        avatar: newUser.avatar // Отправляем аватарку клиенту
       },
       token
-    }) // ✅ Теперь возвращаем `user` и `token`
+    })
   } catch (err) {
     res.status(500).json({ message: "Error in registration", error: err.message })
   }

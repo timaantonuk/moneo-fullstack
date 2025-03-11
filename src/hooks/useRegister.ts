@@ -22,9 +22,7 @@ export const useRegister = () => {
         },
         onSuccess: (data) => {
             localStorage.setItem("token", data.token)
-            console.log("Dispatching setUser", data)
             dispatch(setUser({ user: data.user, token: data.token }))
-            localStorage.setItem("token", data.token)
             navigate("/")
         },
         onError: (error: any) => {
