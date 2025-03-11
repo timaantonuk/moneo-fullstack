@@ -5,22 +5,12 @@ import User from "../models/User.js"
 
 const router = express.Router()
 
-// Register
+// Register user
 router.post("/register", async (req, res) => {
   try {
     const { fullName, email, password } = req.body
 
-    // Validate input fields
-    if (!fullName || !email || !password) {
-      return res.status(400).json({ message: "All fields are required" })
-    }
-
-    // Check password length
-    if (password.length < 6) {
-      return res.status(400).json({ message: "Password must be at least 6 characters" })
-    }
-
-    // Check for existing user
+    // Check if user already exists
     const existingUser = await User.findOne({ email })
     if (existingUser) {
       return res.status(400).json({ message: "Email already in use" })
@@ -34,11 +24,24 @@ router.post("/register", async (req, res) => {
     const newUser = new User({ fullName, email, passwordHash })
     await newUser.save()
 
-    res.status(201).json({ message: "Register success!" })
+    // Generate token
+    const token = jwt.sign({ userId: newUser._id }, process.env.JWT_SECRET, { expiresIn: "7d" })
+
+    res.status(201).json({
+      user: {
+        _id: newUser._id,
+        fullName: newUser.fullName,
+        email: newUser.email,
+        language: newUser.language || "en",
+        avatar: newUser.avatar || null
+      },
+      token
+    }) // ✅ Теперь возвращаем `user` и `token`
   } catch (err) {
     res.status(500).json({ message: "Error in registration", error: err.message })
   }
 })
+
 
 // Login
 router.post("/login", async (req, res) => {
