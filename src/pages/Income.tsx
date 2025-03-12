@@ -10,7 +10,7 @@ function Income() {
                 <Typography variant='h5'>Total Income Statistics</Typography>
                 <FormDialog type='income'/>
             </div>
-            <ExpenseAndIncomeTable/>
+            <ExpenseAndIncomeTable type='income'/>
         </div>
     );
 }

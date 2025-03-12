@@ -60,44 +60,30 @@ router.get("/", checkAuth, async (req, res) => {
 // Update transaction
 router.put("/:id", checkAuth, async (req, res) => {
   try {
-    const { type, amount, category, description } = req.body
-    const transaction = await Transaction.findById(req.params.id)
+    const { amount, description } = req.body;
+    console.log("Received update request:", req.body); // ЛОГ ДЛЯ ОТЛАДКИ
+
+    const transaction = await Transaction.findById(req.params.id);
 
     if (!transaction) {
-      return res.status(404).json({ message: "Transaction not found" })
+      return res.status(404).json({ message: "Transaction not found" });
     }
 
     if (transaction.userId.toString() !== req.userId) {
-      return res.status(403).json({ message: "Unauthorized to edit this transaction" })
+      return res.status(403).json({ message: "Unauthorized to edit this transaction" });
     }
 
-    // Check if category is changed
-    let existingCategory = await Category.findOne({ userId: req.userId, name: category })
+    // Обновляем только те поля, которые переданы
+    if (amount !== undefined) transaction.amount = amount;
+    if (description !== undefined) transaction.description = description;
 
-    if (!existingCategory) {
-      // If category is new, generate a color and save it
-      existingCategory = new Category({
-        userId: req.userId,
-        name: category,
-        emoji: "💰", // Default emoji
-        color: generateRandomColor()
-      })
-      await existingCategory.save()
-    }
-
-    transaction.type = type || transaction.type
-    transaction.amount = amount || transaction.amount
-    transaction.category = category || transaction.category
-    transaction.emoji = existingCategory.emoji
-    transaction.color = existingCategory.color
-    transaction.description = description || transaction.description
-
-    await transaction.save()
-    res.json({ message: "Transaction updated successfully!", transaction })
+    await transaction.save();
+    res.json({ message: "Transaction updated successfully!", transaction });
   } catch (err) {
-    res.status(500).json({ message: "Error updating transaction", error: err.message })
+    console.error("Error updating transaction:", err);
+    res.status(500).json({ message: "Error updating transaction", error: err.message });
   }
-})
+});
 
 // Delete transaction
 router.delete("/:id", checkAuth, async (req, res) => {

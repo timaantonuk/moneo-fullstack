@@ -11,7 +11,7 @@ function Expenses() {
                 <Typography variant='h5'>Total Expenses Statistics</Typography>
                 <FormDialog type='expense'/>
             </div>
-            <ExpenseAndIncomeTable/>
+            <ExpenseAndIncomeTable type='expense'/>
         </div>
     );
 }

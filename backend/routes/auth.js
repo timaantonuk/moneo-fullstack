@@ -2,12 +2,12 @@ import express from "express"
 import bcrypt from "bcryptjs"
 import jwt from "jsonwebtoken"
 import User from "../models/User.js"
-import crypto from "crypto" // Для генерации случайного seed
+import crypto from "crypto"
 
 
 const router = express.Router()
 
-// Register user
+
 // Register user
 router.post("/register", async (req, res) => {
   try {
@@ -80,7 +80,7 @@ router.post("/login", async (req, res) => {
     // Send token and user data
     res.json({
       token,
-      user: { fullName: user.fullName, email: user.email }
+      user: { fullName: user.fullName, email: user.email, avatar: user.avatar || avatarUrl }
     })
   } catch (err) {
     res.status(500).json({ message: "Error logging in", error: err.message })

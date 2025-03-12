@@ -1,17 +1,22 @@
-import * as React from 'react';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
-import { Box, Select, MenuItem, InputLabel, FormControl } from '@mui/material';
+import { useState } from "react";
+import {
+    Button,
+    TextField,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    FormControl,
+    InputLabel,
+    MenuItem,
+    Select,
+} from "@mui/material";
+import { useAddTransaction } from "../hooks/useAddTransaction.ts"; // Подключаем хук
 
 type TFormDialogProps = {
-    type: 'expense' | 'income',
+    type: "expense" | "income";
 };
 
-// 20 популярных эмодзи для финансового приложения
 const emojiList = [
     "💰", "💳", "🏦", "📈", "📉",
     "💵", "💸", "🪙", "🏧", "🛒",
@@ -20,118 +25,127 @@ const emojiList = [
 ];
 
 export default function FormDialog({ type }: TFormDialogProps) {
-    const [open, setOpen] = React.useState(false);
-    const [selectedEmoji, setSelectedEmoji] = React.useState("");
+    const { mutate: addTransaction } = useAddTransaction(); // Хук для добавления транзакции
+
+    const [open, setOpen] = useState(false);
+    const [selectedEmoji, setSelectedEmoji] = useState("");
+    const [category, setCategory] = useState("");
+    const [amount, setAmount] = useState("");
+    const [description, setDescription] = useState("");
 
     const handleClickOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    const handleClose = () => {
+        setOpen(false);
+        setCategory("");
+        setAmount("");
+        setDescription("");
+        setSelectedEmoji("");
+    };
+
+    const handleAddTransaction = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        if (!category || !amount || !selectedEmoji) return;
+
+        addTransaction({
+            type,
+            category,
+            amount: Number(amount),
+            description,
+            emoji: selectedEmoji,
+        });
+
+        handleClose();
+    };
 
     return (
-        <React.Fragment>
+        <>
             <Button variant="contained" onClick={handleClickOpen}>
-                Add {type === 'expense' ? 'Expense' : 'Income'}
+                Add {type === "expense" ? "Expense" : "Income"}
             </Button>
             <Dialog
                 open={open}
                 onClose={handleClose}
                 slotProps={{
                     paper: {
-                        component: 'form',
-                        onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
-                            event.preventDefault();
-                            const formData = new FormData(event.currentTarget);
-                            const formJson = Object.fromEntries((formData as any).entries());
-                            console.log(formJson);
-                            handleClose();
-                        },
+                        component: "form",
+                        onSubmit: handleAddTransaction,
                     },
                 }}
             >
-                <DialogTitle sx={{ backgroundColor: '#212121', color: 'white' }}>
-                    Add {type === 'expense' ? 'Expense' : 'Income'}
+                <DialogTitle sx={{ backgroundColor: "#212121", color: "white" }}>
+                    Add {type === "expense" ? "Expense" : "Income"}
                 </DialogTitle>
-                <DialogContent sx={{ backgroundColor: '#212121' }}>
-
+                <DialogContent sx={{ backgroundColor: "#212121" }}>
+                    {/* Категория */}
                     <TextField
                         required
                         margin="dense"
-                        id="category"
-                        name="category"
                         label="Category"
-                        type="text"
                         fullWidth
-                        variant='standard'
-                        InputLabelProps={{ style: { color: 'white' } }}
-                        InputProps={{ style: { color: 'white' } }}
+                        variant="standard"
+                        value={category}
+                        onChange={(e) => setCategory(e.target.value)}
+                        InputLabelProps={{ style: { color: "white" } }}
+                        InputProps={{ style: { color: "white" } }}
                     />
 
+                    {/* Сумма */}
                     <TextField
                         required
                         margin="dense"
-                        id="amount"
-                        name="amount"
                         label="Amount"
                         type="number"
                         fullWidth
-                        variant='standard'
-                        InputLabelProps={{ style: { color: 'white' } }}
-                        InputProps={{ style: { color: 'white' } }}
+                        variant="standard"
+                        value={amount}
+                        onChange={(e) => setAmount(e.target.value)}
+                        InputLabelProps={{ style: { color: "white" } }}
+                        InputProps={{ style: { color: "white" } }}
                     />
 
                     {/* Эмодзи Select */}
                     <FormControl fullWidth margin="dense" variant="standard">
-                        <InputLabel sx={{ color: 'white' }}>Pick Emoji</InputLabel>
+                        <InputLabel sx={{ color: "white" }}>Pick Emoji</InputLabel>
                         <Select
+                            required={true}
                             value={selectedEmoji}
                             onChange={(event) => setSelectedEmoji(event.target.value)}
-                            displayEmpty
                             sx={{
                                 backgroundColor: "#333",
                                 color: "white",
                                 borderRadius: 1,
-                                '& .MuiSelect-icon': { color: 'white' },
+                                "& .MuiSelect-icon": { color: "white" },
                             }}
                         >
-                            <MenuItem value="">
-                                <em>None</em>
-                            </MenuItem>
-                            <Box
-                                sx={{
-                                    display: "grid",
-                                    gridTemplateColumns: "repeat(5, 1fr)", // 5 колонок
-                                    gap: 1,
-                                    padding: 1,
-                                }}
-                            >
-                                {emojiList.map((emoji) => (
-                                    <MenuItem key={emoji} value={emoji} sx={{ fontSize: "1.5rem", justifyContent: "center" }}>
-                                        {emoji}
-                                    </MenuItem>
-                                ))}
-                            </Box>
+                            {emojiList.map((emoji) => (
+                                <MenuItem key={emoji} value={emoji} sx={{ fontSize: "1.5rem" }}>
+                                    {emoji}
+                                </MenuItem>
+                            ))}
                         </Select>
                     </FormControl>
 
+                    {/* Описание */}
                     <TextField
                         margin="dense"
-                        id="description"
-                        name="description"
                         label="Description"
-                        type="text"
                         fullWidth
-                        variant='standard'
-                        InputLabelProps={{ style: { color: 'white' } }}
-                        InputProps={{ style: { color: 'white' } }}
+                        variant="standard"
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                        InputLabelProps={{ style: { color: "white" } }}
+                        InputProps={{ style: { color: "white" } }}
                     />
-
                 </DialogContent>
-                <DialogActions sx={{ backgroundColor: '#212121' }}>
-                    <Button variant='contained' color='error' onClick={handleClose}>Cancel</Button>
-                    <Button variant='contained' type="submit">
-                        Add {type === 'expense' ? 'Expense' : 'Income'}
+                <DialogActions sx={{ backgroundColor: "#212121" }}>
+                    <Button variant="contained" color="error" onClick={handleClose}>
+                        Cancel
+                    </Button>
+                    <Button variant="contained" type="submit">
+                        Add {type === "expense" ? "Expense" : "Income"}
                     </Button>
                 </DialogActions>
             </Dialog>
-        </React.Fragment>
+        </>
     );
 }

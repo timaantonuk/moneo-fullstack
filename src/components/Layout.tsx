@@ -11,6 +11,8 @@ function Layout() {
     const userName = auth.user?.fullName || "Guest"
 
 
+    console.log(auth)
+
     return (
         <section className="flex justify-center items-center h-screen w-screen">
             <div className="main-wrapper flex flex-col items-center py-5 relative max-w-4xl">

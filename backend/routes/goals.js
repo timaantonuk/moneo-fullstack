@@ -7,24 +7,26 @@ const router = express.Router()
 // Create new goal
 router.post("/", checkAuth, async (req, res) => {
   try {
-    const { title, targetAmount } = req.body
+    const { title, targetAmount, emoji, color } = req.body;
 
-    if (!title || !targetAmount) {
-      return res.status(400).json({ message: "Title and target amount are required" })
+    if (!title || !targetAmount || !emoji || !color) {
+      return res.status(400).json({ message: "Title, target amount, emoji, and color are required" });
     }
 
     const goal = new Goal({
       userId: req.userId,
       title,
-      targetAmount
-    })
+      targetAmount,
+      emoji,
+      color
+    });
 
-    await goal.save()
-    res.status(201).json({ message: "Goal created successfully!", goal })
+    await goal.save();
+    res.status(201).json({ message: "Goal created successfully!", goal });
   } catch (err) {
-    res.status(500).json({ message: "Error creating goal", error: err.message })
+    res.status(500).json({ message: "Error creating goal", error: err.message });
   }
-})
+});
 
 // Get all goals for user
 router.get("/", checkAuth, async (req, res) => {

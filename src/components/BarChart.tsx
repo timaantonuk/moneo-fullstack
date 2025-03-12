@@ -1,125 +1,109 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AgCharts } from "ag-charts-react";
 import { AgChartOptions } from "ag-charts-community";
-import { Box, Paper, Typography } from "@mui/material";
-
-function getData() {
-    return [
-        { period: "January", food: 500, rent: 1000, transport: 200, entertainment: 150, healthcare: 100 },
-        { period: "February", food: 450, rent: 1000, transport: 180, entertainment: 200, healthcare: 120 },
-        { period: "March", food: 480, rent: 1000, transport: 220, entertainment: 170, healthcare: 130 },
-        { period: "April", food: 510, rent: 1000, transport: 210, entertainment: 160, healthcare: 110 },
-        { period: "May", food: 520, rent: 1000, transport: 230, entertainment: 180, healthcare: 105 },
-    ];
-}
+import { Box, Paper, Typography, CircularProgress } from "@mui/material";
+import { useTransactions } from "../hooks/useTransactions.ts";
 
 export default function BarChart() {
-    const [options, setOptions] = useState<AgChartOptions>({
-        title: {
-            text: "Monthly Expenses Breakdown",
-            fontSize: 18,
-            color: '#ff' +
-                'ffff', // Под темную тему MUI
-        },
+    const { data: transactions, isLoading, error } = useTransactions();
+    const [options, setOptions] = useState<AgChartOptions | null>(null);
 
-        subtitle: {
-            text: "All amounts in USD",
-            fontSize: 14,
-            color: '#b0bec5',
-        },
-        data: getData(),
-        series: [
-            {
-                type: "bar",
-                xKey: "period",
-                yKey: "food",
-                yName: "Food",
-                stacked: true,
-            },
-            {
-                type: "bar",
-                xKey: "period",
-                yKey: "rent",
-                yName: "Rent",
-                stacked: true,
-            },
-            {
-                type: "bar",
-                xKey: "period",
-                yKey: "transport",
-                yName: "Transport",
-                stacked: true,
-            },
-            {
-                type: "bar",
-                xKey: "period",
-                yKey: "entertainment",
-                yName: "Entertainment",
-                stacked: true,
-            },
-            {
-                type: "bar",
-                xKey: "period",
-                yKey: "healthcare",
-                yName: "Healthcare",
-                stacked: true,
-            },
-        ],
-        axes: [
-            {
-                type: 'category',
-                position: 'bottom',
-                label: {
-                    color: '#ffffff', // Белый текст для оси, если темная тема
-                    fontSize: 12,
+    useEffect(() => {
+        if (transactions) {
+            const expenseTransactions = transactions.filter(t => t.type === "expense");
+
+
+            const groupedData: Record<string, any> = {};
+            expenseTransactions.forEach(t => {
+                const month = new Date(t.date).toLocaleString("en-US", { month: "long" });
+
+                if (!groupedData[month]) {
+                    groupedData[month] = { period: month };
+                }
+
+                if (!groupedData[month][t.category]) {
+                    groupedData[month][t.category] = 0;
+                }
+
+                groupedData[month][t.category] += t.amount;
+            });
+
+            const chartData = Object.values(groupedData);
+
+            setOptions({
+                title: {
+                    text: "Monthly Expenses Breakdown",
+                    fontSize: 18,
+                    color: "#ffffff",
                 },
-            },
-            {
-                type: 'number',
-                position: 'left',
-                label: {
-                    color: '#ffffff',
-                    fontSize: 12,
+                subtitle: {
+                    text: "All amounts in USD",
+                    fontSize: 14,
+                    color: "#b0bec5",
                 },
-                gridStyle: [
-                    { stroke: '#455a64', lineDash: [4, 2] }
-                ]
-            }
-        ],
-        background: {
-            fill: '#2e2e2e',
-        },
-        legend: {
-            position: 'bottom',
-            item: {
-                label: {
-                    color: '#ffffff',
+                data: chartData,
+                series: Object.keys(chartData[0] || {}).filter(key => key !== "period").map(category => ({
+                    type: "bar",
+                    xKey: "period",
+                    yKey: category,
+                    yName: category,
+                    stacked: true,
+                })),
+                axes: [
+                    {
+                        type: "category",
+                        position: "bottom",
+                        label: {
+                            color: "#ffffff",
+                            fontSize: 12,
+                        },
+                    },
+                    {
+                        type: "number",
+                        position: "left",
+                        label: {
+                            color: "#ffffff",
+                            fontSize: 12,
+                        },
+                        gridStyle: [{ stroke: "#455a64", lineDash: [4, 2] }],
+                    },
+                ],
+                background: {
+                    fill: "#2e2e2e",
                 },
-            },
-        },
-        height: 400
-    });
+                legend: {
+                    position: "bottom",
+                    item: {
+                        label: {
+                            color: "#ffffff",
+                        },
+                    },
+                },
+                height: 400,
+            });
+        }
+    }, [transactions]);
+
+    if (isLoading) return <CircularProgress />;
+    if (error) return <Typography color="error">Failed to load transactions</Typography>;
+    if (!options) return null;
 
     return (
-        <Box sx={{ width: '100%', maxWidth: '800px'}}>
+        <Box sx={{ width: "100%", maxWidth: "800px" }}>
             <Paper
                 elevation={3}
                 sx={{
-                    backgroundColor: '#373737',
+                    backgroundColor: "#373737",
                     padding: 2,
                     borderRadius: 2,
-                    color: 'white',
+                    color: "white",
                 }}
             >
                 <Typography variant="h6" gutterBottom>
-                    Total Expenses: 2500 $
+                    Total Expenses: ${transactions.reduce((sum, t) => t.type === "expense" ? sum + t.amount : sum, 0)}
                 </Typography>
-
-                    <AgCharts options={options}/>
-
+                <AgCharts options={options} />
             </Paper>
-
-
         </Box>
     );
 }
