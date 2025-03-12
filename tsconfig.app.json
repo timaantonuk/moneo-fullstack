@@ -4,6 +4,7 @@
     "checkJs": false,
     "noImplicitAny": false,
     "noImplicitReturns": false,
+    "allowImportingTsExtensions": true,
     "noImplicitThis": false,
     "strictNullChecks": false,
     "strictFunctionTypes": false,
