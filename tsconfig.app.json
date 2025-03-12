@@ -14,7 +14,6 @@
     "noEmit": false,
     "allowUnreachableCode": true,
     "allowUnusedLabels": true,
-    "suppressImplicitAnyIndexErrors": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "downlevelIteration": true,
