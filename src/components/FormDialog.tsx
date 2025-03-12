@@ -1,4 +1,8 @@
-import { useState } from "react";
+"use client"
+
+import type React from "react"
+
+import { useState } from "react"
 import {
     Button,
     TextField,
@@ -10,41 +14,59 @@ import {
     InputLabel,
     MenuItem,
     Select,
-} from "@mui/material";
-import { useAddTransaction } from "../hooks/useAddTransaction.ts"; // Подключаем хук
+} from "@mui/material"
+import { useAddTransaction } from "../hooks/useAddTransaction.ts"
+import { useTranslation } from "react-i18next"
 
 type TFormDialogProps = {
-    type: "expense" | "income";
-};
+    type: "expense" | "income"
+}
 
 const emojiList = [
-    "💰", "💳", "🏦", "📈", "📉",
-    "💵", "💸", "🪙", "🏧", "🛒",
-    "🔖", "🏠", "🛍️", "💲", "💎",
-    "💼", "💡", "📝", "🍽️", "🚗"
-];
+    "💰",
+    "💳",
+    "🏦",
+    "📈",
+    "📉",
+    "💵",
+    "💸",
+    "🪙",
+    "🏧",
+    "🛒",
+    "🔖",
+    "🏠",
+    "🛍️",
+    "💲",
+    "💎",
+    "💼",
+    "💡",
+    "📝",
+    "🍽️",
+    "🚗",
+]
 
 export default function FormDialog({ type }: TFormDialogProps) {
-    const { mutate: addTransaction } = useAddTransaction(); // Хук для добавления транзакции
+    const { mutate: addTransaction } = useAddTransaction()
+    const { t } = useTranslation()
 
-    const [open, setOpen] = useState(false);
-    const [selectedEmoji, setSelectedEmoji] = useState("");
-    const [category, setCategory] = useState("");
-    const [amount, setAmount] = useState("");
-    const [description, setDescription] = useState("");
+    const [open, setOpen] = useState(false)
+    const [selectedEmoji, setSelectedEmoji] = useState("")
+    const [category, setCategory] = useState("")
+    const [amount, setAmount] = useState("")
+    const [description, setDescription] = useState("")
 
-    const handleClickOpen = () => setOpen(true);
+    const handleClickOpen = () => setOpen(true)
     const handleClose = () => {
-        setOpen(false);
-        setCategory("");
-        setAmount("");
-        setDescription("");
-        setSelectedEmoji("");
-    };
+        setOpen(false)
+        setCategory("")
+        setAmount("")
+        setDescription("")
+        setSelectedEmoji("")
+    }
 
     const handleAddTransaction = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        if (!category || !amount || !selectedEmoji) return;
+        event.preventDefault()
+        if (!category || !amount || !selectedEmoji) return
 
         addTransaction({
             type,
@@ -52,15 +74,17 @@ export default function FormDialog({ type }: TFormDialogProps) {
             amount: Number(amount),
             description,
             emoji: selectedEmoji,
-        });
+        })
 
-        handleClose();
-    };
+        handleClose()
+    }
+
+    const translatedType = type === "expense" ? t("expenses.addExpense") : t("income.addIncome")
 
     return (
         <>
             <Button variant="contained" onClick={handleClickOpen}>
-                Add {type === "expense" ? "Expense" : "Income"}
+                {translatedType}
             </Button>
             <Dialog
                 open={open}
@@ -73,14 +97,15 @@ export default function FormDialog({ type }: TFormDialogProps) {
                 }}
             >
                 <DialogTitle sx={{ backgroundColor: "#212121", color: "white" }}>
-                    Add {type === "expense" ? "Expense" : "Income"}
+                    {t("transactions.addTransaction.title", {
+                        type: type === "expense" ? t("navigation.expenses") : t("navigation.income"),
+                    })}
                 </DialogTitle>
                 <DialogContent sx={{ backgroundColor: "#212121" }}>
-                    {/* Категория */}
                     <TextField
                         required
                         margin="dense"
-                        label="Category"
+                        label={t("transactions.addTransaction.category")}
                         fullWidth
                         variant="standard"
                         value={category}
@@ -89,11 +114,10 @@ export default function FormDialog({ type }: TFormDialogProps) {
                         InputProps={{ style: { color: "white" } }}
                     />
 
-                    {/* Сумма */}
                     <TextField
                         required
                         margin="dense"
-                        label="Amount"
+                        label={t("transactions.addTransaction.amount")}
                         type="number"
                         fullWidth
                         variant="standard"
@@ -103,9 +127,8 @@ export default function FormDialog({ type }: TFormDialogProps) {
                         InputProps={{ style: { color: "white" } }}
                     />
 
-                    {/* Эмодзи Select */}
                     <FormControl fullWidth margin="dense" variant="standard">
-                        <InputLabel sx={{ color: "white" }}>Pick Emoji</InputLabel>
+                        <InputLabel sx={{ color: "white" }}>{t("transactions.addTransaction.emoji")}</InputLabel>
                         <Select
                             required={true}
                             value={selectedEmoji}
@@ -125,10 +148,9 @@ export default function FormDialog({ type }: TFormDialogProps) {
                         </Select>
                     </FormControl>
 
-                    {/* Описание */}
                     <TextField
                         margin="dense"
-                        label="Description"
+                        label={t("transactions.addTransaction.description")}
                         fullWidth
                         variant="standard"
                         value={description}
@@ -139,13 +161,14 @@ export default function FormDialog({ type }: TFormDialogProps) {
                 </DialogContent>
                 <DialogActions sx={{ backgroundColor: "#212121" }}>
                     <Button variant="contained" color="error" onClick={handleClose}>
-                        Cancel
+                        {t("common.cancel")}
                     </Button>
                     <Button variant="contained" type="submit">
-                        Add {type === "expense" ? "Expense" : "Income"}
+                        {t("common.add")} {type === "expense" ? t("navigation.expenses") : t("navigation.income")}
                     </Button>
                 </DialogActions>
             </Dialog>
         </>
-    );
+    )
 }
+

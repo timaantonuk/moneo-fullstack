@@ -1,27 +1,36 @@
-import { Button, TextField, Typography, CircularProgress, Alert } from "@mui/material";
-import { Link } from "react-router-dom";
-import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { useRegister } from "../hooks/useRegister.ts";
+"use client"
+
+import { Button, TextField, Typography, CircularProgress, Alert } from "@mui/material"
+import { Link } from "react-router-dom"
+import MonetizationOnIcon from "@mui/icons-material/MonetizationOn"
+import { type SubmitHandler, useForm } from "react-hook-form"
+import { useRegister } from "../hooks/useRegister.ts"
+import { useTranslation } from "react-i18next"
 
 function Register() {
     type TFormFields = {
-        fullName: string;
-        email: string;
-        password: string;
-        confirmPassword: string;
-    };
+        fullName: string
+        email: string
+        password: string
+        confirmPassword: string
+    }
 
-    const { register, handleSubmit, watch, formState: { errors } } = useForm<TFormFields>();
-    const { mutate: registerUser, isPending, error } = useRegister();
+    const {
+        register,
+        handleSubmit,
+        watch,
+        formState: { errors },
+    } = useForm<TFormFields>()
+    const { mutate: registerUser, isPending, error } = useRegister()
+    const { t } = useTranslation()
 
     const onSubmit: SubmitHandler<TFormFields> = (data) => {
         registerUser({
             fullName: data.fullName,
             email: data.email,
-            password: data.password
-        });
-    };
+            password: data.password,
+        })
+    }
 
     return (
         <section className="flex justify-center items-center h-screen">
@@ -31,23 +40,25 @@ function Register() {
                     <Typography variant="h2">Moneo App</Typography>
                 </div>
 
-                <Typography variant="h5" sx={{ marginBottom: "2rem" }}>Register new account</Typography>
+                <Typography variant="h5" sx={{ marginBottom: "2rem" }}>
+                    {t("auth.register.title")}
+                </Typography>
 
                 {error && (
                     <Alert severity="error" sx={{ marginBottom: "1rem" }}>
-                        {error?.response?.data?.message || "Something went wrong. Please try again."}
+                        {error?.response?.data?.message || t("auth.register.registerFailed")}
                     </Alert>
                 )}
 
                 <form className="flex flex-col gap-5 w-full px-16 max-w-2xl" onSubmit={handleSubmit(onSubmit)}>
                     <TextField
-                        label="Full Name"
+                        label={t("auth.register.fullName")}
                         {...register("fullName", {
-                            required: "Full name is required!",
+                            required: t("auth.register.fullNameRequired"),
                             minLength: {
                                 value: 4,
-                                message: "Full name must be at least 4 symbols!"
-                            }
+                                message: t("auth.register.fullNameLength"),
+                            },
                         })}
                         error={!!errors.fullName}
                         helperText={errors.fullName?.message}
@@ -55,14 +66,14 @@ function Register() {
                     />
 
                     <TextField
-                        label="Email"
+                        label={t("auth.register.email")}
                         type="email"
                         {...register("email", {
-                            required: "Email is required!",
+                            required: t("auth.register.emailRequired"),
                             pattern: {
                                 value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-                                message: "Invalid email format"
-                            }
+                                message: t("auth.register.invalidEmail"),
+                            },
                         })}
                         error={!!errors.email}
                         helperText={errors.email?.message}
@@ -70,14 +81,14 @@ function Register() {
                     />
 
                     <TextField
-                        label="Password"
+                        label={t("auth.register.password")}
                         type="password"
                         {...register("password", {
-                            required: "Password is required!",
+                            required: t("auth.register.passwordRequired"),
                             minLength: {
                                 value: 8,
-                                message: "Password must be at least 8 characters long"
-                            }
+                                message: t("auth.register.passwordLength"),
+                            },
                         })}
                         error={!!errors.password}
                         helperText={errors.password?.message}
@@ -85,12 +96,11 @@ function Register() {
                     />
 
                     <TextField
-                        label="Confirm Password"
+                        label={t("auth.register.confirmPassword")}
                         type="password"
                         {...register("confirmPassword", {
-                            required: "Confirm Password is required!",
-                            validate: (value) =>
-                                value === watch("password") || "Passwords do not match"
+                            required: t("auth.register.confirmRequired"),
+                            validate: (value) => value === watch("password") || t("auth.register.passwordsMatch"),
                         })}
                         fullWidth
                         sx={{ marginBottom: "2rem" }}
@@ -98,18 +108,18 @@ function Register() {
                         helperText={errors.confirmPassword?.message}
                     />
 
-
                     <Button type="submit" variant="contained" color="primary" size="large" disabled={isPending}>
-                        {isPending ? <CircularProgress size={24} color="inherit" /> : "Register"}
+                        {isPending ? <CircularProgress size={24} color="inherit" /> : t("auth.register.button")}
                     </Button>
 
                     <Button component={Link} to="/login" variant="outlined" color="primary" size="large">
-                        Already have an account? Log in
+                        {t("auth.register.haveAccount")}
                     </Button>
                 </form>
             </div>
         </section>
-    );
+    )
 }
 
-export default Register;
+export default Register
+

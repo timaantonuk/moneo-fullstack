@@ -1,0 +1,128 @@
+{
+  "common": {
+    "welcome": "Willkommen, {{name}} 👋",
+    "logout": "Abmelden",
+    "cancel": "Abbrechen",
+    "save": "Speichern",
+    "edit": "Bearbeiten",
+    "delete": "Löschen",
+    "add": "Hinzufügen",
+    "noData": "Keine Daten verfügbar."
+  },
+  "navigation": {
+    "dashboard": "Dashboard",
+    "income": "Einkommen",
+    "expenses": "Ausgaben",
+    "goals": "Ziele",
+    "account": "Konto"
+  },
+  "auth": {
+    "login": {
+      "title": "Bei Ihrem Konto anmelden",
+      "email": "E-Mail",
+      "password": "Passwort",
+      "button": "Anmelden",
+      "newAccount": "Neu hier? Erstellen Sie ein Konto!",
+      "emailRequired": "E-Mail ist erforderlich!",
+      "invalidEmail": "Ungültiges E-Mail-Format",
+      "passwordRequired": "Passwort ist erforderlich!",
+      "loginFailed": "Anmeldung fehlgeschlagen. Bitte versuchen Sie es erneut."
+    },
+    "register": {
+      "title": "Neues Konto registrieren",
+      "fullName": "Vollständiger Name",
+      "email": "E-Mail",
+      "password": "Passwort",
+      "confirmPassword": "Passwort bestätigen",
+      "button": "Registrieren",
+      "haveAccount": "Haben Sie bereits ein Konto? Anmelden",
+      "fullNameRequired": "Vollständiger Name ist erforderlich!",
+      "fullNameLength": "Vollständiger Name muss mindestens 4 Zeichen lang sein!",
+      "emailRequired": "E-Mail ist erforderlich!",
+      "invalidEmail": "Ungültiges E-Mail-Format",
+      "passwordRequired": "Passwort ist erforderlich!",
+      "passwordLength": "Passwort muss mindestens 8 Zeichen lang sein",
+      "confirmRequired": "Passwortbestätigung ist erforderlich!",
+      "passwordsMatch": "Passwörter stimmen nicht überein",
+      "registerFailed": "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut."
+    }
+  },
+  "dashboard": {
+    "totalBudget": "Ihr Gesamtbudget: ${{amount}}",
+    "sortBy": "Sortieren nach",
+    "sortOptions": {
+      "all": "Alle Zeit (Standard)",
+      "month": "Monat",
+      "day": "Tag"
+    },
+    "charts": {
+      "incomeBreakdown": "Einkommensaufschlüsselung",
+      "expensesBreakdown": "Monatliche Ausgabenaufschlüsselung",
+      "sortedBy": "Sortiert nach: {{period}}",
+      "totalIncome": "Gesamteinkommen: ${{amount}}",
+      "totalExpenses": "Gesamtausgaben: ${{amount}}",
+      "noTransactions": "Keine Transaktionen für {{period}}."
+    }
+  },
+  "income": {
+    "title": "Einkommensstatistik",
+    "addIncome": "Einkommen hinzufügen",
+    "noIncome": "Keine Einkommenstransaktionen verfügbar."
+  },
+  "expenses": {
+    "title": "Ausgabenstatistik",
+    "addExpense": "Ausgabe hinzufügen",
+    "noExpenses": "Keine Ausgabentransaktionen verfügbar."
+  },
+  "transactions": {
+    "date": "Datum",
+    "category": "Kategorie",
+    "amount": "Betrag",
+    "description": "Beschreibung",
+    "actions": "Aktionen",
+    "editTransaction": "Transaktion bearbeiten",
+    "addTransaction": {
+      "title": "{{type}} hinzufügen",
+      "category": "Kategorie",
+      "amount": "Betrag",
+      "emoji": "Emoji auswählen",
+      "description": "Beschreibung"
+    }
+  },
+  "goals": {
+    "title": "Ihre Ziele:",
+    "addGoal": "Ziel hinzufügen",
+    "noGoals": "Keine Ziele",
+    "target": "Ziel: ${{amount}}",
+    "addNewGoal": "Neues Ziel hinzufügen",
+    "yourGoal": "Ihr Ziel:",
+    "targetAmount": "Zielbetrag:",
+    "selectIcon": "Symbol auswählen",
+    "icons": {
+      "Savings": "Ersparnisse",
+      "Gym": "Fitnessstudio",
+      "HealthyEating": "Gesunde Ernährung",
+      "Travel": "Reisen",
+      "Finance": "Finanzen"
+    }
+  },
+  "account": {
+    "yourAvatar": "Ihr Avatar",
+    "regenerate": "Neu generieren",
+    "yourName": "Ihr Name",
+    "language": "Sprache",
+    "editName": "Namen bearbeiten",
+    "editLanguage": "Sprache bearbeiten",
+    "languages": {
+      "en": "🇬🇧 English",
+      "ru": "🇷🇺 Русский",
+      "de": "🇩🇪 Deutsch"
+    }
+  },
+  "errors": {
+    "failedToLoad": "Fehler beim Laden von {{item}}",
+    "userNotFound": "Benutzer nicht gefunden",
+    "unauthorized": "Nicht autorisiert"
+  }
+}
+

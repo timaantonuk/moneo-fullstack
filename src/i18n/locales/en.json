@@ -1,0 +1,128 @@
+{
+  "common": {
+    "welcome": "Welcome, {{name}} 👋",
+    "logout": "Logout",
+    "cancel": "Cancel",
+    "save": "Save",
+    "edit": "Edit",
+    "delete": "Delete",
+    "add": "Add",
+    "noData": "No data available."
+  },
+  "navigation": {
+    "dashboard": "Dashboard",
+    "income": "Income",
+    "expenses": "Expenses",
+    "goals": "Goals",
+    "account": "Account"
+  },
+  "auth": {
+    "login": {
+      "title": "Login to your account",
+      "email": "Email",
+      "password": "Password",
+      "button": "Log In",
+      "newAccount": "New here? Create an account!",
+      "emailRequired": "Email is required!",
+      "invalidEmail": "Invalid email format",
+      "passwordRequired": "Password is required!",
+      "loginFailed": "Login failed. Please try again."
+    },
+    "register": {
+      "title": "Register new account",
+      "fullName": "Full Name",
+      "email": "Email",
+      "password": "Password",
+      "confirmPassword": "Confirm Password",
+      "button": "Register",
+      "haveAccount": "Already have an account? Log in",
+      "fullNameRequired": "Full name is required!",
+      "fullNameLength": "Full name must be at least 4 symbols!",
+      "emailRequired": "Email is required!",
+      "invalidEmail": "Invalid email format",
+      "passwordRequired": "Password is required!",
+      "passwordLength": "Password must be at least 8 characters long",
+      "confirmRequired": "Confirm Password is required!",
+      "passwordsMatch": "Passwords do not match",
+      "registerFailed": "Something went wrong. Please try again."
+    }
+  },
+  "dashboard": {
+    "totalBudget": "Your total budget: ${{amount}}",
+    "sortBy": "Sort by",
+    "sortOptions": {
+      "all": "All Time (default)",
+      "month": "Month",
+      "day": "Day"
+    },
+    "charts": {
+      "incomeBreakdown": "Income Breakdown",
+      "expensesBreakdown": "Monthly Expenses Breakdown",
+      "sortedBy": "Sorted by: {{period}}",
+      "totalIncome": "Total Income: ${{amount}}",
+      "totalExpenses": "Total Expenses: ${{amount}}",
+      "noTransactions": "No transactions for {{period}}."
+    }
+  },
+  "income": {
+    "title": "Total Income Statistics",
+    "addIncome": "Add Income",
+    "noIncome": "No income transactions available."
+  },
+  "expenses": {
+    "title": "Total Expenses Statistics",
+    "addExpense": "Add Expense",
+    "noExpenses": "No expense transactions available."
+  },
+  "transactions": {
+    "date": "Date",
+    "category": "Category",
+    "amount": "Amount",
+    "description": "Description",
+    "actions": "Actions",
+    "editTransaction": "Edit Transaction",
+    "addTransaction": {
+      "title": "Add {{type}}",
+      "category": "Category",
+      "amount": "Amount",
+      "emoji": "Pick Emoji",
+      "description": "Description"
+    }
+  },
+  "goals": {
+    "title": "Your Goals:",
+    "addGoal": "Add Goal",
+    "noGoals": "No goals",
+    "target": "Target: ${{amount}}",
+    "addNewGoal": "Add a New Goal",
+    "yourGoal": "Your Goal:",
+    "targetAmount": "Target Amount:",
+    "selectIcon": "Select Icon",
+    "icons": {
+      "Savings": "Savings",
+      "Gym": "Gym",
+      "HealthyEating": "Healthy Eating",
+      "Travel": "Travel",
+      "Finance": "Finance"
+    }
+  },
+  "account": {
+    "yourAvatar": "Your Avatar",
+    "regenerate": "Re-generate",
+    "yourName": "Your Name",
+    "language": "Language",
+    "editName": "Edit Name",
+    "editLanguage": "Edit Language",
+    "languages": {
+      "en": "🇬🇧 English",
+      "ru": "🇷🇺 Русский",
+      "de": "🇩🇪 Deutsch"
+    }
+  },
+  "errors": {
+    "failedToLoad": "Failed to load {{item}}",
+    "userNotFound": "User not found",
+    "unauthorized": "Unauthorized"
+  }
+}
+
