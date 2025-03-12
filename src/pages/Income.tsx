@@ -12,7 +12,7 @@ function Income() {
                 <Typography
                     variant="h5"
                     sx={{
-                        fontSize: { xs: "1.25rem", sm: "1.5rem", md: "1.5rem" }, // Уменьшение на мобильных
+                        fontSize: { xs: "1rem", sm: "1.5rem", md: "1.5rem" },
                         textAlign: "center",
                     }}
                 >
@@ -21,7 +21,7 @@ function Income() {
                 <FormDialog
                     type="income"
                     sx={{
-                        fontSize: { xs: "0.8rem", sm: "1rem" }, // Кнопка тоже адаптивная
+                        fontSize: { xs: "0.8rem", sm: "1rem" },
                         padding: { xs: "5px 10px", sm: "8px 16px" },
                         minWidth: { xs: "auto", sm: "fit-content" },
                     }}

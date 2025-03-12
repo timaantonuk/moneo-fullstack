@@ -64,11 +64,21 @@ function Layout() {
                         <IconButton onClick={handleMenuOpen}>
                             <MoreVert />
                         </IconButton>
-                        <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
-                            <MenuItem>
+                        <Menu
+                            anchorEl={anchorEl}
+                            open={Boolean(anchorEl)}
+                            onClose={handleMenuClose}
+                            PaperProps={{
+                                sx: {
+                                    padding: "4px",
+                                    minWidth: "150px",
+                                },
+                            }}
+                        >
+                            <MenuItem sx={{ justifyContent: "center" }}>
                                 <LogoutButton />
                             </MenuItem>
-                            <MenuItem>
+                            <MenuItem sx={{ justifyContent: "center" }}>
                                 <LanguageSelector />
                             </MenuItem>
                         </Menu>

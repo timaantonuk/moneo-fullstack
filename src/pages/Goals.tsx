@@ -113,9 +113,10 @@ export default function Goals() {
                         setOpen(true)
                     }}
                     sx={{
-                        minWidth: { xs: 80, sm: 120 },
-                        fontSize: { xs: "0.75rem", sm: "1rem" },
+                        minWidth: { xs: "100px", sm: "120px" },
+                        fontSize: { xs: "0.75rem", sm: "0.875rem" },
                         padding: { xs: "4px 8px", sm: "6px 16px" },
+                        height: { xs: "32px", sm: "36px" },
                     }}
                 >
                     {t("goals.addGoal")}

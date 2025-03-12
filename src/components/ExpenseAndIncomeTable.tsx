@@ -1,9 +1,8 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useMemo } from "react"
 import { AllCommunityModule, ModuleRegistry, themeQuartz } from "ag-grid-community"
 import { AgGridReact } from "ag-grid-react"
-import { useMemo } from "react"
 import { useTransactions } from "../hooks/useTransactions.ts"
 import { useDeleteTransaction } from "../hooks/useDeleteTransaction.ts"
 import { useUpdateTransaction } from "../hooks/useUpdateTransaction.ts"
@@ -20,7 +19,7 @@ import {
     Box,
 } from "@mui/material"
 import { Delete, EditNote } from "@mui/icons-material"
-import { dateComparator } from "../utils/functions.ts"
+import { format } from "date-fns" // ✅ Импортируем date-fns
 import { useTranslation } from "react-i18next"
 
 ModuleRegistry.registerModules([AllCommunityModule])
@@ -96,7 +95,15 @@ export default function ExpenseAndIncomeTable({ type }: { type: "income" | "expe
 
     const colDefs = useMemo(
         () => [
-            { field: "date", headerName: t("transactions.date"), flex: 1, comparator: dateComparator, sort: "desc" },
+            {
+                field: "date",
+                headerName: t("transactions.date"),
+                flex: 1,
+                valueFormatter: (p: any) => format(new Date(p.value), "MMM dd, yyyy"), // ✅ Форматируем дату без времени
+                comparator: (valueA: string, valueB: string) =>
+                    new Date(valueA).getTime() - new Date(valueB).getTime(), // ✅ Сортировка по дате
+                sort: "desc",
+            },
             {
                 field: "category",
                 headerName: t("transactions.category"),
@@ -121,7 +128,7 @@ export default function ExpenseAndIncomeTable({ type }: { type: "income" | "expe
                 sortable: false,
             },
         ],
-        [t],
+        [t]
     )
 
     if (isLoading)
@@ -182,4 +189,3 @@ export default function ExpenseAndIncomeTable({ type }: { type: "income" | "expe
         </>
     )
 }
-

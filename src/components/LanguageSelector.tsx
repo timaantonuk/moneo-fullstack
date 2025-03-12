@@ -71,8 +71,10 @@ function LanguageSelector() {
                 sx={{
                     display: "flex",
                     alignItems: "center",
-                    minWidth: { xs: "auto", sm: "120px" },
-                    padding: { xs: "6px 10px", sm: "6px 16px" },
+                    minWidth: { xs: "100px", sm: "120px" },
+                    fontSize: { xs: "0.75rem", sm: "0.875rem" },
+                    padding: { xs: "4px 8px", sm: "6px 16px" },
+                    height: { xs: "32px", sm: "36px" },
                 }}
             >
                 <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>

@@ -83,7 +83,16 @@ export default function FormDialog({ type }: TFormDialogProps) {
 
     return (
         <>
-            <Button variant="contained" onClick={handleClickOpen}>
+            <Button
+                variant="contained"
+                onClick={handleClickOpen}
+                sx={{
+                    minWidth: { xs: "100px", sm: "140px" },
+                    fontSize: { xs: "0.75rem", sm: "0.875rem" },
+                    padding: { xs: "4px 8px", sm: "6px 16px" },
+                    height: { xs: "32px", sm: "36px" },
+                }}
+            >
                 {translatedType}
             </Button>
             <Dialog

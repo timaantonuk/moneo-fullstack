@@ -97,9 +97,10 @@ function Account() {
                             startIcon={<RefreshIcon />}
                             onClick={reGenerateAvatar}
                             sx={{
-                                minWidth: { xs: 80, sm: 120 },
-                                fontSize: { xs: "0.75rem", sm: "1rem" },
+                                minWidth: { xs: "100px", sm: "120px" },
+                                fontSize: { xs: "0.75rem", sm: "0.875rem" },
                                 padding: { xs: "4px 8px", sm: "6px 16px" },
+                                height: { xs: "32px", sm: "36px" },
                             }}
                         >
                             {t("account.regenerate")}
@@ -123,9 +124,10 @@ function Account() {
                             startIcon={<EditIcon />}
                             onClick={() => setOpenNameDialog(true)}
                             sx={{
-                                minWidth: { xs: 80, sm: 120 },
-                                fontSize: { xs: "0.75rem", sm: "1rem" },
+                                minWidth: { xs: "80px", sm: "120px" },
+                                fontSize: { xs: "0.75rem", sm: "0.875rem" },
                                 padding: { xs: "4px 8px", sm: "6px 16px" },
+                                height: { xs: "32px", sm: "36px" },
                             }}
                         >
                             {t("common.edit")}
@@ -149,9 +151,10 @@ function Account() {
                             startIcon={<EditIcon />}
                             onClick={() => setOpenLanguageDialog(true)}
                             sx={{
-                                minWidth: { xs: 80, sm: 120 },
-                                fontSize: { xs: "0.75rem", sm: "1rem" },
+                                minWidth: { xs: "80px", sm: "120px" },
+                                fontSize: { xs: "0.75rem", sm: "0.875rem" },
                                 padding: { xs: "4px 8px", sm: "6px 16px" },
+                                height: { xs: "32px", sm: "36px" },
                             }}
                         >
                             {t("common.edit")}
