@@ -19,35 +19,35 @@ function Dashboard() {
     }
 
     // Filter transactions by selected period
-    const filteredTransactions = transactions?.filter((t) => {
-        const today = new Date()
-        const transactionDate = new Date(t.date)
+    const filteredTransactions =
+        transactions?.filter((t) => {
+            const today = new Date()
+            const transactionDate = new Date(t.date)
 
-        if (sortPeriod === "day") {
-            return (
-                transactionDate.getDate() === today.getDate() &&
-                transactionDate.getMonth() === today.getMonth() &&
-                transactionDate.getFullYear() === today.getFullYear()
-            )
-        } else if (sortPeriod === "month") {
-            return transactionDate.getMonth() === today.getMonth() && transactionDate.getFullYear() === today.getFullYear()
-        }
+            if (sortPeriod === "day") {
+                return (
+                    transactionDate.getDate() === today.getDate() &&
+                    transactionDate.getMonth() === today.getMonth() &&
+                    transactionDate.getFullYear() === today.getFullYear()
+                )
+            } else if (sortPeriod === "month") {
+                return transactionDate.getMonth() === today.getMonth() && transactionDate.getFullYear() === today.getFullYear()
+            }
 
-        return true // "all" shows all data
-    })
+            return true // "all" shows all data
+        }) || []
 
     // Calculate budget: (income - expenses)
-    const totalBudget =
-        filteredTransactions?.reduce((sum, t) => {
-            return t.type === "income" ? sum + t.amount : sum - t.amount
-        }, 0) || 0
+    const totalBudget = filteredTransactions.reduce((sum, t) => {
+        return t.type === "income" ? sum + t.amount : sum - t.amount
+    }, 0)
 
     if (isLoading) return <CircularProgress />
     if (error) return <Typography color="error">{t("errors.failedToLoad", { item: "transactions" })}</Typography>
 
     return (
-        <div className="lg:w-full w-screen flex flex-col items-center h-full px-5 pb-24 lg:pb-0 ">
-            <div className="flex lg:flex-row flex-col w-full items-center lg:justify-between lg:px-16 lg:gap-0 gap-5">
+        <div className="w-full flex flex-col items-center h-full px-5">
+            <div className="flex flex-col lg:flex-row w-full items-center justify-between px-4 lg:px-16 gap-4">
                 <Chip
                     icon={<CurrencyExchangeIcon sx={{ fontSize: 22 }} />}
                     label={t("dashboard.totalBudget", { amount: totalBudget.toLocaleString() })}
@@ -62,7 +62,7 @@ function Dashboard() {
                 <SortDropdown onChange={handleSortChange} />
             </div>
 
-            <div className="flex lg:flex-row flex-col gap-5 my-5 w-full">
+            <div className="flex flex-col lg:flex-row gap-5 my-5 w-full">
                 <BarChart transactions={filteredTransactions} sortPeriod={sortPeriod} />
                 <PieChart transactions={filteredTransactions} sortPeriod={sortPeriod} />
             </div>

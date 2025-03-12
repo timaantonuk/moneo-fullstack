@@ -18,6 +18,11 @@ export default function BarChart({ transactions, sortPeriod }) {
 
         const expenseTransactions = transactions.filter((t) => t.type === "expense")
 
+        if (expenseTransactions.length === 0) {
+            setOptions(null)
+            return
+        }
+
         const groupedData = {}
         expenseTransactions.forEach((t) => {
             const month = new Date(t.date).toLocaleString("en-US", { month: "long" })
@@ -34,6 +39,11 @@ export default function BarChart({ transactions, sortPeriod }) {
         })
 
         const chartData = Object.values(groupedData)
+
+        if (chartData.length === 0 || !chartData[0]) {
+            setOptions(null)
+            return
+        }
 
         setOptions({
             title: { text: t("dashboard.charts.expensesBreakdown"), fontSize: 18, color: "#ffffff" },

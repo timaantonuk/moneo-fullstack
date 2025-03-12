@@ -23,6 +23,11 @@ export default function PieChart({ transactions, sortPeriod }) {
                 amount: t.amount,
             }))
 
+        if (incomeData.length === 0) {
+            setOptions(null)
+            return
+        }
+
         setOptions({
             title: { text: t("dashboard.charts.incomeBreakdown"), fontSize: 18, color: "#ffffff" },
             subtitle: { text: t("dashboard.charts.sortedBy", { period: sortPeriod }), fontSize: 14, color: "#b0bec5" },

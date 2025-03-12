@@ -1,6 +1,5 @@
 "use client"
 
-import type React from "react"
 import { useState } from "react"
 import { MenuItem, Select, FormControl, InputLabel } from "@mui/material"
 import { useTranslation } from "react-i18next"
@@ -11,7 +10,7 @@ function SortDropdown({ onChange }: { onChange: (period: SortPeriod) => void }) 
     const [sortPeriod, setSortPeriod] = useState<SortPeriod>("all")
     const { t } = useTranslation()
 
-    const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    const handleChange = (event) => {
         const period = event.target.value as SortPeriod
         setSortPeriod(period)
         onChange(period)
