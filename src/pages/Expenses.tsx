@@ -8,9 +8,24 @@ function Expenses() {
 
     return (
         <div className="w-full flex flex-col items-center h-full px-5">
-            <div className="flex items-center gap-5 mb-5">
-                <Typography variant="h5">{t("expenses.title")}</Typography>
-                <FormDialog type="expense" />
+            <div className="flex items-center gap-2 sm:gap-5 mb-5 flex-wrap justify-center">
+                <Typography
+                    variant="h5"
+                    sx={{
+                        fontSize: { xs: "1.25rem", sm: "1.5rem", md: "1.5rem" }, // Размер шрифта адаптивный
+                        textAlign: "center",
+                    }}
+                >
+                    {t("expenses.title")}
+                </Typography>
+                <FormDialog
+                    type="expense"
+                    sx={{
+                        fontSize: { xs: "0.8rem", sm: "1rem" }, // Размер кнопки на мобильных
+                        padding: { xs: "5px 10px", sm: "8px 16px" },
+                        minWidth: { xs: "auto", sm: "fit-content" },
+                    }}
+                />
             </div>
             <ExpenseAndIncomeTable type="expense" />
         </div>
@@ -18,4 +33,3 @@ function Expenses() {
 }
 
 export default Expenses
-

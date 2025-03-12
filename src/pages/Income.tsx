@@ -8,9 +8,24 @@ function Income() {
 
     return (
         <div className="w-full flex flex-col items-center h-full px-5">
-            <div className="flex items-center gap-5 mb-5">
-                <Typography variant="h5">{t("income.title")}</Typography>
-                <FormDialog type="income" />
+            <div className="flex items-center gap-2 sm:gap-5 mb-5 flex-wrap justify-center">
+                <Typography
+                    variant="h5"
+                    sx={{
+                        fontSize: { xs: "1.25rem", sm: "1.5rem", md: "1.5rem" }, // Уменьшение на мобильных
+                        textAlign: "center",
+                    }}
+                >
+                    {t("income.title")}
+                </Typography>
+                <FormDialog
+                    type="income"
+                    sx={{
+                        fontSize: { xs: "0.8rem", sm: "1rem" }, // Кнопка тоже адаптивная
+                        padding: { xs: "5px 10px", sm: "8px 16px" },
+                        minWidth: { xs: "auto", sm: "fit-content" },
+                    }}
+                />
             </div>
             <ExpenseAndIncomeTable type="income" />
         </div>
@@ -18,4 +33,3 @@ function Income() {
 }
 
 export default Income
-

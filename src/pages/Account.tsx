@@ -15,6 +15,7 @@ import {
     MenuItem,
     Box,
     CircularProgress,
+    useTheme
 } from "@mui/material"
 import RefreshIcon from "@mui/icons-material/Refresh"
 import EditIcon from "@mui/icons-material/Edit"
@@ -35,8 +36,8 @@ function Account() {
     const auth = useSelector((state: RootState) => state.auth)
     const { mutate: updateProfile, isLoading } = useUpdateProfile()
     const { t, i18n } = useTranslation()
+    const theme = useTheme() // Используем тему для адаптивности
 
-    // Load data from Redux
     const user = auth.user
 
     const [avatarUrl, setAvatarUrl] = useState(
@@ -56,31 +57,21 @@ function Account() {
 
         setAvatarUrl(newAvatarUrl)
         updateProfile({ avatar: newAvatarUrl })
-
-        // Update Redux
         dispatch(setUser({ user: { ...user, avatar: newAvatarUrl }, token: auth.token }))
     }
 
     const handleSaveName = () => {
         setName(tempName)
         updateProfile({ fullName: tempName })
-
-        // Update Redux
         dispatch(setUser({ user: { ...user, fullName: tempName }, token: auth.token }))
-
         setOpenNameDialog(false)
     }
 
     const handleSaveLanguage = () => {
         setLanguage(tempLanguage)
         updateProfile({ language: tempLanguage })
-
-        // Update Redux
         dispatch(setUser({ user: { ...user, language: tempLanguage }, token: auth.token }))
-
-        // Change i18n language
         i18n.changeLanguage(tempLanguage)
-
         setOpenLanguageDialog(false)
     }
 
@@ -91,10 +82,26 @@ function Account() {
             <Paper sx={{ width: "100%", maxWidth: 500, padding: 3, backgroundColor: "#212121", color: "white" }}>
                 {/* Avatar */}
                 <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", mb: 2 }}>
-                    <Typography variant="h6">{t("account.yourAvatar")}</Typography>
+                    <Typography
+                        variant="h6"
+                        sx={{
+                            fontSize: { xs: "1rem", sm: "1.25rem" }
+                        }}
+                    >
+                        {t("account.yourAvatar")}
+                    </Typography>
                     <div className="flex items-center gap-5">
-                        <Avatar src={avatarUrl} sx={{ width: 50, height: 50 }} />
-                        <Button variant="contained" startIcon={<RefreshIcon />} onClick={reGenerateAvatar}>
+                        <Avatar src={avatarUrl} sx={{ width: { xs: 40, sm: 50 }, height: { xs: 40, sm: 50 } }} />
+                        <Button
+                            variant="contained"
+                            startIcon={<RefreshIcon />}
+                            onClick={reGenerateAvatar}
+                            sx={{
+                                minWidth: { xs: 80, sm: 120 },
+                                fontSize: { xs: "0.75rem", sm: "1rem" },
+                                padding: { xs: "4px 8px", sm: "6px 16px" }
+                            }}
+                        >
                             {t("account.regenerate")}
                         </Button>
                     </div>
@@ -102,10 +109,26 @@ function Account() {
 
                 {/* Name */}
                 <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", mb: 2 }}>
-                    <Typography variant="h6">{t("account.yourName")}</Typography>
+                    <Typography
+                        variant="h6"
+                        sx={{
+                            fontSize: { xs: "1rem", sm: "1.25rem" }
+                        }}
+                    >
+                        {t("account.yourName")}
+                    </Typography>
                     <div className="flex items-center gap-5">
                         <Typography variant="body1">{name}</Typography>
-                        <Button variant="outlined" startIcon={<EditIcon />} onClick={() => setOpenNameDialog(true)}>
+                        <Button
+                            variant="outlined"
+                            startIcon={<EditIcon />}
+                            onClick={() => setOpenNameDialog(true)}
+                            sx={{
+                                minWidth: { xs: 80, sm: 120 },
+                                fontSize: { xs: "0.75rem", sm: "1rem" },
+                                padding: { xs: "4px 8px", sm: "6px 16px" }
+                            }}
+                        >
                             {t("common.edit")}
                         </Button>
                     </div>
@@ -113,10 +136,26 @@ function Account() {
 
                 {/* Language */}
                 <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                    <Typography variant="h6">{t("account.language")}</Typography>
+                    <Typography
+                        variant="h6"
+                        sx={{
+                            fontSize: { xs: "1rem", sm: "1.25rem" }
+                        }}
+                    >
+                        {t("account.language")}
+                    </Typography>
                     <div className="flex items-center gap-5">
                         <Typography variant="body1">{t(`account.languages.${language}`)}</Typography>
-                        <Button variant="outlined" startIcon={<EditIcon />} onClick={() => setOpenLanguageDialog(true)}>
+                        <Button
+                            variant="outlined"
+                            startIcon={<EditIcon />}
+                            onClick={() => setOpenLanguageDialog(true)}
+                            sx={{
+                                minWidth: { xs: 80, sm: 120 },
+                                fontSize: { xs: "0.75rem", sm: "1rem" },
+                                padding: { xs: "4px 8px", sm: "6px 16px" }
+                            }}
+                        >
                             {t("common.edit")}
                         </Button>
                     </div>
@@ -145,36 +184,8 @@ function Account() {
                     </Button>
                 </DialogActions>
             </Dialog>
-
-            {/* Edit Language Modal */}
-            <Dialog open={openLanguageDialog} onClose={() => setOpenLanguageDialog(false)}>
-                <DialogTitle sx={{ backgroundColor: "#212121", color: "white" }}>{t("account.editLanguage")}</DialogTitle>
-                <DialogContent sx={{ backgroundColor: "#212121" }}>
-                    <Select
-                        fullWidth
-                        value={tempLanguage}
-                        onChange={(e) => setTempLanguage(e.target.value)}
-                        sx={{ backgroundColor: "#333", color: "white", borderRadius: 1 }}
-                    >
-                        {languageOptions.map(({ value }) => (
-                            <MenuItem key={value} value={value}>
-                                {t(`account.languages.${value}`)}
-                            </MenuItem>
-                        ))}
-                    </Select>
-                </DialogContent>
-                <DialogActions sx={{ backgroundColor: "#212121" }}>
-                    <Button color="error" onClick={() => setOpenLanguageDialog(false)}>
-                        {t("common.cancel")}
-                    </Button>
-                    <Button variant="contained" onClick={handleSaveLanguage}>
-                        {t("common.save")}
-                    </Button>
-                </DialogActions>
-            </Dialog>
         </div>
     )
 }
 
 export default Account
-

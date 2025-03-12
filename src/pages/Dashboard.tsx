@@ -46,8 +46,8 @@ function Dashboard() {
     if (error) return <Typography color="error">{t("errors.failedToLoad", { item: "transactions" })}</Typography>
 
     return (
-        <div className="w-full flex flex-col items-center h-full px-5">
-            <div className="flex w-full items-center justify-between px-16">
+        <div className="lg:w-full w-screen flex flex-col items-center h-full px-5 pb-24 lg:pb-0 ">
+            <div className="flex lg:flex-row flex-col w-full items-center lg:justify-between lg:px-16 lg:gap-0 gap-5">
                 <Chip
                     icon={<CurrencyExchangeIcon sx={{ fontSize: 22 }} />}
                     label={t("dashboard.totalBudget", { amount: totalBudget.toLocaleString() })}
@@ -62,7 +62,7 @@ function Dashboard() {
                 <SortDropdown onChange={handleSortChange} />
             </div>
 
-            <div className="flex gap-5 my-5 w-full">
+            <div className="flex lg:flex-row flex-col gap-5 my-5 w-full">
                 <BarChart transactions={filteredTransactions} sortPeriod={sortPeriod} />
                 <PieChart transactions={filteredTransactions} sortPeriod={sortPeriod} />
             </div>

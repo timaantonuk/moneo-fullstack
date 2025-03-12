@@ -31,7 +31,7 @@ function BottomNavigationBar() {
     const [value, setValue] = useState(getTabValue(location.pathname))
 
     return (
-        <Box sx={{ width: "100%", position: "absolute", bottom: 20 }}>
+        <Box sx={{ width: "100%", position: "fixed", bottom: 20 }}>
             <Paper elevation={3}>
                 <BottomNavigation
                     value={value}

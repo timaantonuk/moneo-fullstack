@@ -21,6 +21,7 @@ import {
     InputLabel,
     Typography,
     CircularProgress,
+    useTheme,
 } from "@mui/material"
 import CheckCircleIcon from "@mui/icons-material/CheckCircle"
 import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked"
@@ -46,6 +47,7 @@ const iconOptions = [
 ]
 
 export default function Goals() {
+    const theme = useTheme()
     const { data: goals, isLoading, error } = useGoals()
     const { mutate: addGoal } = useAddGoal()
     const { mutate: deleteGoal } = useDeleteGoal()
@@ -90,13 +92,25 @@ export default function Goals() {
     return (
         <div className="w-full flex flex-col items-center h-full px-5">
             <div className="flex gap-5 items-center mb-7">
-                <Typography variant="h5">{t("goals.title")}</Typography>
+                <Typography
+                    variant="h5"
+                    sx={{
+                        fontSize: { xs: "1.25rem", sm: "1.5rem" },
+                    }}
+                >
+                    {t("goals.title")}
+                </Typography>
                 <Button
                     variant="contained"
                     startIcon={<AddCircleIcon />}
                     onClick={() => {
                         setSelectedIcon(iconOptions[0])
                         setOpen(true)
+                    }}
+                    sx={{
+                        minWidth: { xs: 80, sm: 120 },
+                        fontSize: { xs: "0.75rem", sm: "1rem" },
+                        padding: { xs: "4px 8px", sm: "6px 16px" },
                     }}
                 >
                     {t("goals.addGoal")}
@@ -113,25 +127,38 @@ export default function Goals() {
                             sx={{
                                 display: "flex",
                                 alignItems: "center",
-                                gap: 2,
+                                gap: { xs: 1, sm: 2 },
                                 textDecoration: goal.isCompleted ? "line-through" : "none",
                                 opacity: goal.isCompleted ? 0.5 : 1,
+                                paddingY: { xs: 0.5, sm: 1 },
                             }}
                         >
                             <ListItemIcon sx={{ color: goal.color }}>
-                                <Typography sx={{ fontSize: 24 }}>{goal.emoji}</Typography>
+                                <Typography sx={{ fontSize: { xs: 20, sm: 24 } }}>{goal.emoji}</Typography>
                             </ListItemIcon>
                             <ListItemText
                                 primary={goal.title}
                                 secondary={t("goals.target", { amount: goal.targetAmount.toLocaleString() })}
+                                sx={{
+                                    fontSize: { xs: "0.875rem", sm: "1rem" },
+                                }}
                             />
                             <Checkbox
                                 icon={<RadioButtonUncheckedIcon />}
                                 checkedIcon={<CheckCircleIcon />}
                                 checked={goal.isCompleted}
                                 onChange={() => handleToggleCompleted(goal)}
+                                sx={{
+                                    transform: { xs: "scale(0.8)", sm: "scale(1)" },
+                                }}
                             />
-                            <IconButton color="error" onClick={() => handleDeleteGoal(goal._id)}>
+                            <IconButton
+                                color="error"
+                                onClick={() => handleDeleteGoal(goal._id)}
+                                sx={{
+                                    transform: { xs: "scale(0.8)", sm: "scale(1)" },
+                                }}
+                            >
                                 <DeleteIcon />
                             </IconButton>
                         </ListItem>
@@ -141,17 +168,16 @@ export default function Goals() {
 
             {/* Modal for adding a new goal */}
             <Dialog open={open} onClose={() => setOpen(false)}>
-                <DialogTitle sx={{ backgroundColor: "#212121", color: "white" }}>{t("goals.addNewGoal")}</DialogTitle>
+                <DialogTitle sx={{ backgroundColor: "#212121", color: "white" }}>
+                    {t("goals.addNewGoal")}
+                </DialogTitle>
                 <DialogContent sx={{ backgroundColor: "#212121" }}>
                     <TextField
                         label={t("goals.yourGoal")}
-                        placeholder={t("goals.yourGoal")}
                         variant="standard"
                         fullWidth
                         value={newGoal}
                         onChange={(e) => setNewGoal(e.target.value)}
-                        InputLabelProps={{ style: { color: "white" } }}
-                        InputProps={{ style: { color: "white" } }}
                         sx={{ marginBottom: 3 }}
                     />
 
@@ -162,21 +188,17 @@ export default function Goals() {
                         fullWidth
                         value={targetAmount}
                         onChange={(e) => setTargetAmount(Math.max(1, Number(e.target.value)))}
-                        InputLabelProps={{ style: { color: "white" } }}
-                        InputProps={{ style: { color: "white" } }}
                         sx={{ marginBottom: 3 }}
                     />
 
                     <FormControl fullWidth sx={{ marginBottom: 2 }}>
-                        <InputLabel sx={{ color: "white" }}>{t("goals.selectIcon")}</InputLabel>
+                        <InputLabel>{t("goals.selectIcon")}</InputLabel>
                         <Select
-                            className="mt-2"
                             value={selectedIcon.name}
                             onChange={(e) => {
                                 const selected = iconOptions.find((option) => option.name === e.target.value)
                                 if (selected) setSelectedIcon(selected)
                             }}
-                            sx={{ backgroundColor: "#333", color: "white", borderRadius: 1 }}
                         >
                             {iconOptions.map((option, index) => (
                                 <MenuItem key={index} value={option.name}>
@@ -198,4 +220,3 @@ export default function Goals() {
         </div>
     )
 }
-

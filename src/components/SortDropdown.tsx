@@ -18,7 +18,7 @@ function SortDropdown({ onChange }: { onChange: (period: SortPeriod) => void }) 
     }
 
     return (
-        <FormControl variant="outlined" size="small" className="justify-self-end self-end">
+        <FormControl variant="outlined" size="small" className="lg:justify-self-end lg:self-end w-full lg:w-auto">
             <InputLabel id="sort-by-label">{t("dashboard.sortBy")}</InputLabel>
             <Select labelId="sort-by-label" value={sortPeriod} onChange={handleChange} label={t("dashboard.sortBy")}>
                 <MenuItem value="all">{t("dashboard.sortOptions.all")}</MenuItem>

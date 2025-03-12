@@ -3,6 +3,7 @@
 .main-wrapper {
     background: #151515;
     min-width: 80%;
-    height: 90vh;
+    min-height: 90vh;
+    height: auto;
     border-radius: 1rem;
 }
