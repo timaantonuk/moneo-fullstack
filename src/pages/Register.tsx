@@ -1,6 +1,6 @@
 "use client"
 
-import { Button, TextField, Typography, CircularProgress, Alert } from "@mui/material"
+import { Button, TextField, Typography, CircularProgress, Alert, Box } from "@mui/material"
 import { Link } from "react-router-dom"
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn"
 import { type SubmitHandler, useForm } from "react-hook-form"
@@ -35,12 +35,23 @@ function Register() {
     return (
         <section className="flex justify-center items-center h-screen">
             <div className="main-wrapper flex flex-col items-center justify-center">
-                <div className="flex items-center gap-2 mb-2">
-                    <MonetizationOnIcon sx={{ fontSize: "4rem" }} />
-                    <Typography variant="h2">Moneo App</Typography>
-                </div>
+                <Box
+                    sx={{
+                        display: "flex",
+                        flexDirection: { xs: "column", sm: "row" },
+                        alignItems: "center",
+                        gap: 2,
+                        mb: 2,
+                        textAlign: "center",
+                    }}
+                >
+                    <MonetizationOnIcon sx={{ fontSize: { xs: "3rem", sm: "4rem" } }} />
+                    <Typography variant="h2" sx={{ fontSize: { xs: "1.75rem", sm: "3rem" } }}>
+                        Moneo App
+                    </Typography>
+                </Box>
 
-                <Typography variant="h5" sx={{ marginBottom: "2rem" }}>
+                <Typography variant="h5" sx={{ marginBottom: "2rem", textAlign: "center" }}>
                     {t("auth.register.title")}
                 </Typography>
 
@@ -50,7 +61,7 @@ function Register() {
                     </Alert>
                 )}
 
-                <form className="flex flex-col gap-5 w-full px-16 max-w-2xl" onSubmit={handleSubmit(onSubmit)}>
+                <form className="flex flex-col gap-5 w-full px-4 sm:px-16 max-w-2xl" onSubmit={handleSubmit(onSubmit)}>
                     <TextField
                         label={t("auth.register.fullName")}
                         {...register("fullName", {

@@ -18,7 +18,15 @@ function LogoutButton() {
     }
 
     return (
-        <Button variant="contained" color="error" onClick={handleLogout}>
+        <Button
+            variant="contained"
+            color="error"
+            onClick={handleLogout}
+            sx={{
+                minWidth: { xs: "auto", sm: "100px" },
+                padding: { xs: "6px 10px", sm: "6px 16px" },
+            }}
+        >
             {t("common.logout")}
         </Button>
     )

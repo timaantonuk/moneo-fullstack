@@ -13,7 +13,6 @@ import theme from "./theme"
 import { Provider } from "react-redux"
 import { store } from "./store/store.ts"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
-// Import i18n configuration
 import "./i18n/i18n"
 
 const queryClient = new QueryClient()

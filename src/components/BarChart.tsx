@@ -76,7 +76,7 @@ export default function BarChart({ transactions, sortPeriod }) {
     const totalExpenses = transactions.reduce((sum, t) => (t.type === "expense" ? sum + t.amount : sum), 0)
 
     return (
-        <Box sx={{ width: "100%", maxWidth: "800px" }}>
+        <Box sx={{ width: "100%", maxWidth: "800px", mb: { xs: 6, md: 2 } }}>
             <Paper elevation={3} sx={{ backgroundColor: "#373737", padding: 2, borderRadius: 2, color: "white" }}>
                 <Typography variant="h6" gutterBottom>
                     {t("dashboard.charts.totalExpenses", { amount: totalExpenses })}

@@ -4,7 +4,7 @@ import SortDropdown from "../components/SortDropdown.tsx"
 import { useState } from "react"
 import BarChart from "../components/BarChart.tsx"
 import PieChart from "../components/PieChart.tsx"
-import { Chip, CircularProgress, Typography } from "@mui/material"
+import { Chip, CircularProgress, Typography, Box } from "@mui/material"
 import CurrencyExchangeIcon from "@mui/icons-material/CurrencyExchange"
 import { useTransactions } from "../hooks/useTransactions.ts"
 import { useTranslation } from "react-i18next"
@@ -18,7 +18,6 @@ function Dashboard() {
         setSortPeriod(period)
     }
 
-    // Filter transactions by selected period
     const filteredTransactions =
         transactions?.filter((t) => {
             const today = new Date()
@@ -34,15 +33,20 @@ function Dashboard() {
                 return transactionDate.getMonth() === today.getMonth() && transactionDate.getFullYear() === today.getFullYear()
             }
 
-            return true // "all" shows all data
+            return true
         }) || []
 
-    // Calculate budget: (income - expenses)
     const totalBudget = filteredTransactions.reduce((sum, t) => {
         return t.type === "income" ? sum + t.amount : sum - t.amount
     }, 0)
 
-    if (isLoading) return <CircularProgress />
+    if (isLoading)
+        return (
+            <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "300px", width: "100%" }}>
+                <CircularProgress />
+            </Box>
+        )
+
     if (error) return <Typography color="error">{t("errors.failedToLoad", { item: "transactions" })}</Typography>
 
     return (

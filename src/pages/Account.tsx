@@ -11,11 +11,8 @@ import {
     DialogContent,
     DialogTitle,
     TextField,
-    Select,
-    MenuItem,
     Box,
     CircularProgress,
-    useTheme
 } from "@mui/material"
 import RefreshIcon from "@mui/icons-material/Refresh"
 import EditIcon from "@mui/icons-material/Edit"
@@ -25,18 +22,11 @@ import { setUser } from "../store/slices/authSlice.ts"
 import { useTranslation } from "react-i18next"
 import type { RootState } from "../store/store.ts"
 
-const languageOptions = [
-    { value: "en", label: "🇬🇧 English" },
-    { value: "ru", label: "🇷🇺 Русский" },
-    { value: "de", label: "🇩🇪 Deutsch" },
-]
-
 function Account() {
     const dispatch = useDispatch()
     const auth = useSelector((state: RootState) => state.auth)
     const { mutate: updateProfile, isLoading } = useUpdateProfile()
     const { t, i18n } = useTranslation()
-    const theme = useTheme() // Используем тему для адаптивности
 
     const user = auth.user
 
@@ -57,35 +47,45 @@ function Account() {
 
         setAvatarUrl(newAvatarUrl)
         updateProfile({ avatar: newAvatarUrl })
-        dispatch(setUser({ user: { ...user, avatar: newAvatarUrl }, token: auth.token }))
+        if (user) {
+            dispatch(setUser({ user: { ...user, avatar: newAvatarUrl }, token: auth.token || "" }))
+        }
     }
 
     const handleSaveName = () => {
         setName(tempName)
         updateProfile({ fullName: tempName })
-        dispatch(setUser({ user: { ...user, fullName: tempName }, token: auth.token }))
+        if (user) {
+            dispatch(setUser({ user: { ...user, fullName: tempName }, token: auth.token || "" }))
+        }
         setOpenNameDialog(false)
     }
 
     const handleSaveLanguage = () => {
         setLanguage(tempLanguage)
         updateProfile({ language: tempLanguage })
-        dispatch(setUser({ user: { ...user, language: tempLanguage }, token: auth.token }))
+        if (user) {
+            dispatch(setUser({ user: { ...user, language: tempLanguage }, token: auth.token || "" }))
+        }
         i18n.changeLanguage(tempLanguage)
         setOpenLanguageDialog(false)
     }
 
-    if (isLoading) return <CircularProgress />
+    if (isLoading)
+        return (
+            <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "300px", width: "100%" }}>
+                <CircularProgress />
+            </Box>
+        )
 
     return (
         <div className="w-full flex flex-col items-center h-full px-5">
             <Paper sx={{ width: "100%", maxWidth: 500, padding: 3, backgroundColor: "#212121", color: "white" }}>
-                {/* Avatar */}
                 <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", mb: 2 }}>
                     <Typography
                         variant="h6"
                         sx={{
-                            fontSize: { xs: "1rem", sm: "1.25rem" }
+                            fontSize: { xs: "1rem", sm: "1.25rem" },
                         }}
                     >
                         {t("account.yourAvatar")}
@@ -99,7 +99,7 @@ function Account() {
                             sx={{
                                 minWidth: { xs: 80, sm: 120 },
                                 fontSize: { xs: "0.75rem", sm: "1rem" },
-                                padding: { xs: "4px 8px", sm: "6px 16px" }
+                                padding: { xs: "4px 8px", sm: "6px 16px" },
                             }}
                         >
                             {t("account.regenerate")}
@@ -107,12 +107,11 @@ function Account() {
                     </div>
                 </Box>
 
-                {/* Name */}
                 <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", mb: 2 }}>
                     <Typography
                         variant="h6"
                         sx={{
-                            fontSize: { xs: "1rem", sm: "1.25rem" }
+                            fontSize: { xs: "1rem", sm: "1.25rem" },
                         }}
                     >
                         {t("account.yourName")}
@@ -126,7 +125,7 @@ function Account() {
                             sx={{
                                 minWidth: { xs: 80, sm: 120 },
                                 fontSize: { xs: "0.75rem", sm: "1rem" },
-                                padding: { xs: "4px 8px", sm: "6px 16px" }
+                                padding: { xs: "4px 8px", sm: "6px 16px" },
                             }}
                         >
                             {t("common.edit")}
@@ -134,12 +133,11 @@ function Account() {
                     </div>
                 </Box>
 
-                {/* Language */}
                 <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                     <Typography
                         variant="h6"
                         sx={{
-                            fontSize: { xs: "1rem", sm: "1.25rem" }
+                            fontSize: { xs: "1rem", sm: "1.25rem" },
                         }}
                     >
                         {t("account.language")}
@@ -153,7 +151,7 @@ function Account() {
                             sx={{
                                 minWidth: { xs: 80, sm: 120 },
                                 fontSize: { xs: "0.75rem", sm: "1rem" },
-                                padding: { xs: "4px 8px", sm: "6px 16px" }
+                                padding: { xs: "4px 8px", sm: "6px 16px" },
                             }}
                         >
                             {t("common.edit")}
@@ -162,7 +160,6 @@ function Account() {
                 </Box>
             </Paper>
 
-            {/* Edit Name Modal */}
             <Dialog open={openNameDialog} onClose={() => setOpenNameDialog(false)}>
                 <DialogTitle sx={{ backgroundColor: "#212121", color: "white" }}>{t("account.editName")}</DialogTitle>
                 <DialogContent sx={{ backgroundColor: "#212121" }}>
@@ -189,3 +186,4 @@ function Account() {
 }
 
 export default Account
+

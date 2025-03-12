@@ -1,6 +1,7 @@
 "use client"
 
 import type React from "react"
+
 import { useState } from "react"
 import { Menu, MenuItem, Button, ListItemIcon, ListItemText, Box } from "@mui/material"
 import CheckIcon from "@mui/icons-material/Check"
@@ -24,7 +25,6 @@ function LanguageSelector() {
     const { mutate: updateProfile } = useUpdateProfile()
     const { t, i18n } = useTranslation()
 
-    // Get current language from Redux (authSlice)
     const user = useSelector((state: RootState) => state.auth.user)
     const selectedLanguage: Language = user?.language || "en"
     const auth = useSelector((state: RootState) => state.auth)
@@ -39,27 +39,23 @@ function LanguageSelector() {
 
     const handleSelectLanguage = (lang: Language) => {
         if (lang !== selectedLanguage) {
-            // First change the i18n language immediately for better UX
             i18n.changeLanguage(lang)
 
-            // Then update the backend and Redux
             updateProfile(
                 { language: lang },
                 {
                     onSuccess: () => {
-                        // This will only run if the API call succeeds
                         console.log("Language updated successfully")
                     },
                     onError: (error) => {
                         console.error("Failed to update language on server:", error)
-                        // Optionally revert the i18n language if the API call fails
-                        // i18n.changeLanguage(selectedLanguage);
                     },
                 },
             )
 
-            // Update Redux immediately for better UX
-            dispatch(setUser({ user: { ...user, language: lang }, token: auth.token }))
+            if (user) {
+                dispatch(setUser({ user: { ...user, language: lang }, token: auth.token || "" }))
+            }
 
             handleClose()
         }
@@ -69,10 +65,19 @@ function LanguageSelector() {
 
     return (
         <div>
-            <Button variant="contained" onClick={handleClick} sx={{ display: "flex", alignItems: "center" }}>
+            <Button
+                variant="contained"
+                onClick={handleClick}
+                sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    minWidth: { xs: "auto", sm: "120px" },
+                    padding: { xs: "6px 10px", sm: "6px 16px" },
+                }}
+            >
                 <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                     <span style={{ fontSize: "18px" }}>{currentLanguage?.flag}</span>
-                    <span>{currentLanguage?.label}</span>
+                    <span className="hidden sm:inline">{currentLanguage?.label}</span>
                 </Box>
             </Button>
 

@@ -10,6 +10,11 @@ interface UpdateProfileData {
     language?: string
 }
 
+interface MutationCallbacks {
+    onSuccess?: () => void
+    onError?: (error: any) => void
+}
+
 export const useUpdateProfile = () => {
     const auth = useSelector((state: RootState) => state.auth)
     const dispatch = useDispatch()
@@ -18,9 +23,6 @@ export const useUpdateProfile = () => {
     return useMutation({
         mutationFn: async (updateData: UpdateProfileData) => {
             try {
-                // Log the token to check if it exists
-                console.log("Auth token:", auth.token)
-
                 const { data } = await api.put(`/profile`, updateData)
                 return data
             } catch (error) {
@@ -29,13 +31,13 @@ export const useUpdateProfile = () => {
             }
         },
         onSuccess: (data) => {
-            // Update the user in Redux store
-            dispatch(setUser({ user: data.user, token: auth.token }))
-            queryClient.invalidateQueries(["user"])
+            if (auth.user) {
+                dispatch(setUser({ user: data.user || auth.user, token: auth.token || "" }))
+            }
+            queryClient.invalidateQueries({ queryKey: ["user"] })
         },
         onError: (error) => {
             console.error("Failed to update profile:", error)
-            // If we get a 401, we can handle it here as well
             if (error.response && error.response.status === 401) {
                 console.log("Authentication error, please log in again")
             }

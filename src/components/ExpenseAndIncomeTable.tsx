@@ -17,6 +17,7 @@ import {
     DialogContent,
     DialogTitle,
     TextField,
+    Box,
 } from "@mui/material"
 import { Delete, EditNote } from "@mui/icons-material"
 import { dateComparator } from "../utils/functions.ts"
@@ -44,7 +45,7 @@ export default function ExpenseAndIncomeTable({ type }: { type: "income" | "expe
     const { t } = useTranslation()
 
     const [editDialogOpen, setEditDialogOpen] = useState(false)
-    const [selectedTransaction, setSelectedTransaction] = useState(null)
+    const [selectedTransaction, setSelectedTransaction] = useState<any>(null)
     const [updatedAmount, setUpdatedAmount] = useState(0)
     const [updatedDescription, setUpdatedDescription] = useState("")
 
@@ -56,10 +57,10 @@ export default function ExpenseAndIncomeTable({ type }: { type: "income" | "expe
         deleteTransaction(id)
     }
 
-    const handleEdit = (transaction) => {
+    const handleEdit = (transaction: any) => {
         setSelectedTransaction(transaction)
         setUpdatedAmount(transaction.amount)
-        setUpdatedDescription(transaction.description)
+        setUpdatedDescription(transaction.description || "")
         setEditDialogOpen(true)
     }
 
@@ -74,7 +75,7 @@ export default function ExpenseAndIncomeTable({ type }: { type: "income" | "expe
         }
     }
 
-    const CustomActions = ({ data }) => {
+    const CustomActions = ({ data }: { data: any }) => {
         return (
             <div className="flex gap-4">
                 <Button variant="contained" color="error" onClick={() => handleDelete(data._id)}>
@@ -87,7 +88,7 @@ export default function ExpenseAndIncomeTable({ type }: { type: "income" | "expe
         )
     }
 
-    const CustomCategories = ({ data }) => {
+    const CustomCategories = ({ data }: { data: any }) => {
         return (
             <Chip label={`${data.emoji} ${data.category}`} sx={{ backgroundColor: data.color ? data.color : "#313131" }} />
         )
@@ -108,7 +109,7 @@ export default function ExpenseAndIncomeTable({ type }: { type: "income" | "expe
                 field: "amount",
                 headerName: t("transactions.amount"),
                 flex: 1,
-                valueFormatter: (p) => "$" + p.value.toLocaleString(),
+                valueFormatter: (p: any) => "$" + p.value.toLocaleString(),
             },
             { field: "description", headerName: t("transactions.description"), flex: 2, filter: false, sortable: false },
             {
@@ -123,18 +124,26 @@ export default function ExpenseAndIncomeTable({ type }: { type: "income" | "expe
         [t],
     )
 
-    if (isLoading) return <CircularProgress />
+    if (isLoading)
+        return (
+            <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "300px", width: "100%" }}>
+                <CircularProgress />
+            </Box>
+        )
+
     if (error) return <Typography color="error">{t("errors.failedToLoad", { item: "transactions" })}</Typography>
+
     if (filteredData.length === 0)
         return <Typography>{type === "income" ? t("income.noIncome") : t("expenses.noExpenses")}</Typography>
 
     return (
         <>
-            <div style={{ height: 500, width: "100%" }}>
-                <AgGridReact theme={myTheme} rowData={filteredData} columnDefs={colDefs} />
+            <div style={{ height: 500, width: "100%", overflowX: "auto" }}>
+                <div style={{ minWidth: "800px", height: "100%" }}>
+                    <AgGridReact theme={myTheme} rowData={filteredData} columnDefs={colDefs} />
+                </div>
             </div>
 
-            {/* Dialog for Editing Transaction */}
             <Dialog open={editDialogOpen} onClose={() => setEditDialogOpen(false)}>
                 <DialogTitle sx={{ backgroundColor: "#212121", color: "white" }}>
                     {t("transactions.editTransaction")}

@@ -21,7 +21,7 @@ import {
     InputLabel,
     Typography,
     CircularProgress,
-    useTheme,
+    Box,
 } from "@mui/material"
 import CheckCircleIcon from "@mui/icons-material/CheckCircle"
 import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked"
@@ -47,7 +47,6 @@ const iconOptions = [
 ]
 
 export default function Goals() {
-    const theme = useTheme()
     const { data: goals, isLoading, error } = useGoals()
     const { mutate: addGoal } = useAddGoal()
     const { mutate: deleteGoal } = useDeleteGoal()
@@ -79,14 +78,20 @@ export default function Goals() {
         deleteGoal(id)
     }
 
-    const handleToggleCompleted = (goal) => {
+    const handleToggleCompleted = (goal: any) => {
         updateGoal({
             id: goal._id,
             isCompleted: !goal.isCompleted,
         })
     }
 
-    if (isLoading) return <CircularProgress />
+    if (isLoading)
+        return (
+            <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "300px", width: "100%" }}>
+                <CircularProgress />
+            </Box>
+        )
+
     if (error) return <Typography color="error">{t("errors.failedToLoad", { item: "goals" })}</Typography>
 
     return (
@@ -119,58 +124,56 @@ export default function Goals() {
 
             <Paper sx={{ width: "100%", maxWidth: 500, padding: 2, backgroundColor: "#212121", color: "white" }}>
                 <List>
-                    {!goals.length && <p className="text-center">{t("goals.noGoals")}</p>}
+                    {!goals || (goals.length === 0 && <p className="text-center">{t("goals.noGoals")}</p>)}
 
-                    {goals.map((goal) => (
-                        <ListItem
-                            key={goal._id}
-                            sx={{
-                                display: "flex",
-                                alignItems: "center",
-                                gap: { xs: 1, sm: 2 },
-                                textDecoration: goal.isCompleted ? "line-through" : "none",
-                                opacity: goal.isCompleted ? 0.5 : 1,
-                                paddingY: { xs: 0.5, sm: 1 },
-                            }}
-                        >
-                            <ListItemIcon sx={{ color: goal.color }}>
-                                <Typography sx={{ fontSize: { xs: 20, sm: 24 } }}>{goal.emoji}</Typography>
-                            </ListItemIcon>
-                            <ListItemText
-                                primary={goal.title}
-                                secondary={t("goals.target", { amount: goal.targetAmount.toLocaleString() })}
+                    {goals &&
+                        goals.map((goal: any) => (
+                            <ListItem
+                                key={goal._id}
                                 sx={{
-                                    fontSize: { xs: "0.875rem", sm: "1rem" },
-                                }}
-                            />
-                            <Checkbox
-                                icon={<RadioButtonUncheckedIcon />}
-                                checkedIcon={<CheckCircleIcon />}
-                                checked={goal.isCompleted}
-                                onChange={() => handleToggleCompleted(goal)}
-                                sx={{
-                                    transform: { xs: "scale(0.8)", sm: "scale(1)" },
-                                }}
-                            />
-                            <IconButton
-                                color="error"
-                                onClick={() => handleDeleteGoal(goal._id)}
-                                sx={{
-                                    transform: { xs: "scale(0.8)", sm: "scale(1)" },
+                                    display: "flex",
+                                    alignItems: "center",
+                                    gap: { xs: 1, sm: 2 },
+                                    textDecoration: goal.isCompleted ? "line-through" : "none",
+                                    opacity: goal.isCompleted ? 0.5 : 1,
+                                    paddingY: { xs: 0.5, sm: 1 },
                                 }}
                             >
-                                <DeleteIcon />
-                            </IconButton>
-                        </ListItem>
-                    ))}
+                                <ListItemIcon sx={{ color: goal.color }}>
+                                    <Typography sx={{ fontSize: { xs: 20, sm: 24 } }}>{goal.emoji}</Typography>
+                                </ListItemIcon>
+                                <ListItemText
+                                    primary={goal.title}
+                                    secondary={t("goals.target", { amount: goal.targetAmount.toLocaleString() })}
+                                    sx={{
+                                        fontSize: { xs: "0.875rem", sm: "1rem" },
+                                    }}
+                                />
+                                <Checkbox
+                                    icon={<RadioButtonUncheckedIcon />}
+                                    checkedIcon={<CheckCircleIcon />}
+                                    checked={goal.isCompleted}
+                                    onChange={() => handleToggleCompleted(goal)}
+                                    sx={{
+                                        transform: { xs: "scale(0.8)", sm: "scale(1)" },
+                                    }}
+                                />
+                                <IconButton
+                                    color="error"
+                                    onClick={() => handleDeleteGoal(goal._id)}
+                                    sx={{
+                                        transform: { xs: "scale(0.8)", sm: "scale(1)" },
+                                    }}
+                                >
+                                    <DeleteIcon />
+                                </IconButton>
+                            </ListItem>
+                        ))}
                 </List>
             </Paper>
 
-            {/* Modal for adding a new goal */}
             <Dialog open={open} onClose={() => setOpen(false)}>
-                <DialogTitle sx={{ backgroundColor: "#212121", color: "white" }}>
-                    {t("goals.addNewGoal")}
-                </DialogTitle>
+                <DialogTitle sx={{ backgroundColor: "#212121", color: "white" }}>{t("goals.addNewGoal")}</DialogTitle>
                 <DialogContent sx={{ backgroundColor: "#212121" }}>
                     <TextField
                         label={t("goals.yourGoal")}
@@ -220,3 +223,4 @@ export default function Goals() {
         </div>
     )
 }
+

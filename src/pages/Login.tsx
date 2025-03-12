@@ -1,6 +1,6 @@
 "use client"
 
-import { Button, TextField, Typography, CircularProgress, Alert } from "@mui/material"
+import { Button, TextField, Typography, CircularProgress, Alert, Box } from "@mui/material"
 import { Link } from "react-router-dom"
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn"
 import { type SubmitHandler, useForm } from "react-hook-form"
@@ -28,11 +28,22 @@ function Login() {
     return (
         <section className="flex justify-center items-center h-screen">
             <div className="main-wrapper flex flex-col items-center justify-center py-5">
-                <div className="flex items-center gap-2 mb-2">
-                    <MonetizationOnIcon sx={{ fontSize: "4rem" }} />
-                    <Typography variant="h2">Moneo App</Typography>
-                </div>
-                <Typography variant="h5" sx={{ marginBottom: "2rem" }}>
+                <Box
+                    sx={{
+                        display: "flex",
+                        flexDirection: { xs: "column", sm: "row" },
+                        alignItems: "center",
+                        gap: 2,
+                        mb: 2,
+                        textAlign: "center",
+                    }}
+                >
+                    <MonetizationOnIcon sx={{ fontSize: { xs: "3rem", sm: "4rem" } }} />
+                    <Typography variant="h2" sx={{ fontSize: { xs: "1.75rem", sm: "3rem" } }}>
+                        Moneo App
+                    </Typography>
+                </Box>
+                <Typography variant="h5" sx={{ marginBottom: "2rem", textAlign: "center" }}>
                     {t("auth.login.title")}
                 </Typography>
 
@@ -42,7 +53,7 @@ function Login() {
                     </Alert>
                 )}
 
-                <form className="flex flex-col gap-5 w-full max-w-2xl" onSubmit={handleSubmit(onSubmit)}>
+                <form className="flex flex-col gap-5 w-full max-w-2xl px-4 sm:px-16" onSubmit={handleSubmit(onSubmit)}>
                     <TextField
                         label={t("auth.login.email")}
                         type="email"

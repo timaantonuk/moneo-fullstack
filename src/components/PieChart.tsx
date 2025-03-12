@@ -16,12 +16,26 @@ export default function PieChart({ transactions, sortPeriod }) {
             return
         }
 
-        const incomeData = transactions
+        // Group income transactions by category and sum amounts
+        const incomeData = []
+        const incomeByCategory = {}
+
+        transactions
             .filter((t) => t.type === "income")
-            .map((t) => ({
-                category: t.category,
-                amount: t.amount,
-            }))
+            .forEach((t) => {
+                if (!incomeByCategory[t.category]) {
+                    incomeByCategory[t.category] = 0
+                }
+                incomeByCategory[t.category] += t.amount
+            })
+
+        // Convert to array format for chart
+        Object.keys(incomeByCategory).forEach((category) => {
+            incomeData.push({
+                category,
+                amount: incomeByCategory[category],
+            })
+        })
 
         if (incomeData.length === 0) {
             setOptions(null)
@@ -37,7 +51,25 @@ export default function PieChart({ transactions, sortPeriod }) {
                     type: "pie",
                     angleKey: "amount",
                     labelKey: "category",
-                    label: { enabled: true, color: "#ffffff", fontSize: 14 },
+                    calloutLabelKey: "category",
+                    sectorLabelKey: "amount",
+                    sectorLabel: {
+                        formatter: (params) => `$${params.datum.amount}`,
+                        color: "#ffffff",
+                    },
+                    calloutLabel: {
+                        enabled: true,
+                        color: "#ffffff",
+                        fontSize: 14,
+                    },
+                    tooltip: {
+                        renderer: (params) => {
+                            return {
+                                title: params.datum.category,
+                                content: `$${params.datum.amount.toLocaleString()}`,
+                            }
+                        },
+                    },
                 },
             ],
             background: { fill: "#2e2e2e" },
@@ -49,7 +81,7 @@ export default function PieChart({ transactions, sortPeriod }) {
     const totalIncome = transactions.reduce((sum, t) => (t.type === "income" ? sum + t.amount : sum), 0)
 
     return (
-        <Box sx={{ width: "100%", maxWidth: "800px" }}>
+        <Box sx={{ width: "100%", maxWidth: "800px", mb: { xs: 6, md: 2 } }}>
             <Paper elevation={3} sx={{ backgroundColor: "#373737", padding: 2, borderRadius: 2, color: "white" }}>
                 <Typography variant="h6" gutterBottom>
                     {t("dashboard.charts.totalIncome", { amount: totalIncome })}

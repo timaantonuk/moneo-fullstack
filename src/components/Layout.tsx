@@ -1,63 +1,85 @@
-import {Avatar, Typography} from "@mui/material"
-import {Outlet} from "react-router-dom"
+"use client"
+
+import type React from "react"
+
+import { Avatar, Typography, Box, IconButton, Menu, MenuItem } from "@mui/material"
+import { Outlet } from "react-router-dom"
 import LogoutButton from "./LogoutButton"
 import LanguageSelector from "./LanguageSelector"
 import BottomNavigationBar from "./BottomNavigationBar"
-import {useSelector} from "react-redux"
-import {useTranslation} from "react-i18next"
-import type {RootState} from "../store/store"
+import { useSelector } from "react-redux"
+import { useTranslation } from "react-i18next"
+import type { RootState } from "../store/store"
+import { useState } from "react"
+import { MoreVert } from "@mui/icons-material"
 
 function Layout() {
     const auth = useSelector((state: RootState) => state.auth)
     const userName = auth.user?.fullName || "Guest"
-    const {t} = useTranslation()
+    const { t } = useTranslation()
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+
+    const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorEl(event.currentTarget)
+    }
+
+    const handleMenuClose = () => {
+        setAnchorEl(null)
+    }
 
     return (
         <section className="flex justify-center items-center lg:h-screen h-auto w-screen">
             <div className="main-wrapper flex flex-col items-center py-5 relative max-w-4xl">
-
                 <div className="hidden lg:flex gap-2 items-center justify-between w-full px-10 mb-5">
-                    <LogoutButton/>
+                    <LogoutButton />
                     <div className="flex gap-2 items-center">
-                        <Avatar alt="Your Avatar" sx={{width: 64, height: 64}} src={auth.user?.avatar || ""}/>
+                        <Avatar alt="Your Avatar" sx={{ width: 64, height: 64 }} src={auth.user?.avatar || ""} />
                         <Typography
                             sx={{
-                                fontSize: {xs: "1.2rem", sm: "2rem", md: "2.5rem", lg: "3rem"}
+                                fontSize: { xs: "1.2rem", sm: "2rem", md: "2.5rem", lg: "3rem" },
                             }}
-                            variant="h4">
-                            {t("common.welcome", {name: userName})}
+                            variant="h4"
+                        >
+                            {t("common.welcome", { name: userName })}
                         </Typography>
                     </div>
-                    <LanguageSelector/>
+                    <LanguageSelector />
                 </div>
 
-                <div className="lg:hidden flex flex-col gap-2 items-center justify-between w-full px-10 mb-5">
-
-
-
-                    <div className="flex gap-2 items-center">
-                        <Avatar alt="Your Avatar" sx={{width: 48, height: 48}} src={auth.user?.avatar || ""}/>
+                <div className="lg:hidden flex flex-col gap-2 items-center justify-between w-full px-5 mb-5">
+                    <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%" }}>
+                        <Avatar alt="Your Avatar" sx={{ width: 48, height: 48 }} src={auth.user?.avatar || ""} />
                         <Typography
                             sx={{
-                                fontSize: {xs: "1.2rem", sm: "2rem", md: "2.5rem", lg: "3rem"}
+                                fontSize: { xs: "1rem", sm: "1.5rem" },
+                                maxWidth: "60%",
+                                textOverflow: "ellipsis",
+                                overflow: "hidden",
+                                whiteSpace: "nowrap",
                             }}
-                            variant="h4">
-                            {t("common.welcome", {name: userName})}
+                            variant="h5"
+                        >
+                            {t("common.welcome", { name: userName })}
                         </Typography>
-                    </div>
-
-                    {/*<div className='flex gap-10'>*/}
-                    {/*    <LogoutButton/>*/}
-                    {/*    <LanguageSelector/>*/}
-                    {/*</div>*/}
-
+                        <IconButton onClick={handleMenuOpen}>
+                            <MoreVert />
+                        </IconButton>
+                        <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
+                            <MenuItem>
+                                <LogoutButton />
+                            </MenuItem>
+                            <MenuItem>
+                                <LanguageSelector />
+                            </MenuItem>
+                        </Menu>
+                    </Box>
                 </div>
 
                 <div className="w-full flex-1">
-                    <Outlet/>
+                    <Outlet />
                 </div>
 
-                <BottomNavigationBar/>
+                <BottomNavigationBar />
             </div>
         </section>
     )
